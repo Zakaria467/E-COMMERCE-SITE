@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="fr" >
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NexusStore - Futuristic E-Commerce</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
@@ -14,38 +16,50 @@
 <body class="dark">
   <!-- Navigation -->
   <header class="cyber-header">
-    <div class="container mx-auto px-4 py-6 flex justify-between items-center">
-        <a href="#" class="logo-nexus">
+    <div class="container px-4 py-3">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a href="#" class="navbar-brand logo-nexus">
             <span class="logo-text">NEXUS</span>
             <span class="logo-hover"></span>
           </a>
-      
-          <nav class="hidden md:flex items-center space-x-1">
-            <div class="nav-container">
-              <a href="#" class="nav-link" data-text="Home">Home</a>
-              <a href="#" class="nav-link" data-text="Shop">Shop</a>
-              <a href="#" class="nav-link" data-text="Collections">Collections</a>
-              <a href="#" class="nav-link" data-text="About">About</a>
-              <div class="nav-indicator"></div>
-            </div>
-          </nav>
-      
-          <div class="flex items-center space-x-3">
-            <!-- Bouton Dark Mode -->
-            <button id="darkModeToggle" class="mode-toggle-btn" aria-label="Toggle dark mode">
-              <div class="toggle-circle">
-                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.5 4.9l1.4 1.4L4.9 7.8 3.5 6.4 2.1 4.9l1.4-1.4zm14.2 14.2l1.4 1.4-1.4 1.4-1.4-1.4 1.4-1.4zM5.6 16.4l1.4 1.4-1.4 1.4-1.4-1.4 1.4-1.4zM19.1 4.9l1.4 1.4-2.8 2.8-1.4-1.4 2.8-2.8zM1 11h3v2H1v-2zm19 0h3v2h-3v-2zM7.8 19.1l1.4 1.4-2.8 2.8-1.4-1.4 2.8-2.8z"/>
-                </svg>
-                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6c.3 0 .7 0 1 .1-.4-.3-.8-.5-1.3-.5-1.7 0-3 1.3-3 3s1.3 3 3 3c.5 0 .9-.2 1.3-.5-.3.1-.7.1-1 .1z"/>
-                </svg>
-              </div>
-              <span class="toggle-track"></span>
-            </button>
           
-            <!-- Bouton Panier -->
-            <button class="cart-btn" aria-label="Shopping cart">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+              <li class="nav-item">
+                <a href="#" class="nav-link nav-link" data-text="Home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link nav-link" data-text="Shop">Shop</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link nav-link" data-text="Collections">Collections</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link nav-link" data-text="About">About</a>
+              </li>
+            </ul>
+            
+            <div class="d-flex align-items-center">
+              <!-- Bouton Dark Mode -->
+              <button id="darkModeToggle" class="mode-toggle-btn me-3" aria-label="Toggle dark mode">
+                <div class="toggle-circle">
+                  <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.5 4.9l1.4 1.4L4.9 7.8 3.5 6.4 2.1 4.9l1.4-1.4zm14.2 14.2l1.4 1.4-1.4 1.4-1.4-1.4 1.4-1.4zM5.6 16.4l1.4 1.4-1.4 1.4-1.4-1.4 1.4-1.4zM19.1 4.9l1.4 1.4-2.8 2.8-1.4-1.4 2.8-2.8zM1 11h3v2H1v-2zm19 0h3v2h-3v-2zM7.8 19.1l1.4 1.4-2.8 2.8-1.4-1.4 2.8-2.8z"/>
+                  </svg>
+                  <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6c.3 0 .7 0 1 .1-.4-.3-.8-.5-1.3-.5-1.7 0-3 1.3-3 3s1.3 3 3 3c.5 0 .9-.2 1.3-.5-.3.1-.7.1-1 .1z"/>
+                  </svg>
+                </div>
+                <span class="toggle-track"></span>
+              </button>
+            
+              <!-- Bouton Panier -->
+              <button class="cart-btn me-3" aria-label="Shopping cart">
                 <div class="cart-icon-container">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="cart-icon">
                     <path d="M7 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM3 3h2l.4 2m3.6 8h10l1-5H6.4L5 5H3"/>
@@ -55,167 +69,211 @@
                 </div>
                 <div class="cart-pulse"></div>
               </button>
-          
-            <!-- Bouton Login -->
-            <button class="auth-btn group">
-              <span>Login</span>
-              <div class="auth-underline"></div>
-            </button>
+            
+              <!-- Bouton Login -->
+              <button class="auth-btn group">
+                <span>Login</span>
+                <div class="auth-underline"></div>
+              </button>
+            </div>
           </div>
-      </div>
+        </div>
+      </nav>
     </div>
   </header>
 
   <!-- Hero Section -->
   <section class="cyber-hero">
-    <div class="cyber-hero-content">
-      <h1>THE FUTURE OF SHOPPING</h1>
-      <p class="cyber-subtitle">Experience next-gen products in an immersive cyberpunk environment</p>
-      <button class="cyber-button-primary">EXPLORE NOW</button>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-8 mx-auto text-center">
+          <div class="cyber-hero-content">
+            <h1>THE FUTURE OF SHOPPING</h1>
+            <p class="cyber-subtitle">Experience next-gen products in an immersive cyberpunk environment</p>
+            <button class="cyber-button-primary">EXPLORE NOW</button>
+          </div>
+          <div class="cyber-scroll-indicator"></div>
+        </div>
+      </div>
     </div>
-    <div class="cyber-scroll-indicator"></div>
   </section>
 
   <!-- Featured Products -->
-  <section class="cyber-section">
-    <h2 class="cyber-section-title">FEATURED <span>PRODUCTS</span></h2>
-    
-    <div class="cyber-products-grid">
-      <!-- Product Card 1 -->
-      <div class="cyber-product-card">
-        <div class="product-badge">NEW</div>
-        <div class="product-image-container">
-          <img src="Heat-Wave-Unisex-Future-Tech-Z87-Neo-Safari-Atmosphere-Sunglasses-Kowear-02__38157.jpg" alt="Cyber Glasses" class="product-image">
-        </div>
-        <h3>Neon Vision Glasses</h3>
-        <div class="product-rating">
-          ★★★★☆ <span>(128)</span>
-        </div>
-        <div class="product-footer">
-          <span class="product-price">$299.99</span>
-          <button class="cyber-button-small">ADD TO CART</button>
-        </div>
-      </div>
+  <section class="cyber-section py-5">
+    <div class="container">
+      <h2 class="cyber-section-title text-center mb-5">FEATURED <span>PRODUCTS</span></h2>
       
-      <!-- Product Card 2 -->
-      <div class="cyber-product-card">
-        <div class="product-image-container">
-          <img src="freepik__the-style-is-candid-image-photography-with-natural__3415.jpeg" alt="Quantum Keyboard" class="product-image">
+      <div class="row g-4">
+        <!-- Product Card 1 -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="cyber-product-card h-100">
+            <div class="product-badge">NEW</div>
+            <div class="product-image-container">
+              <img src="Heat-Wave-Unisex-Future-Tech-Z87-Neo-Safari-Atmosphere-Sunglasses-Kowear-02__38157.jpg" alt="Cyber Glasses" class="product-image img-fluid">
+            </div>
+            <h3>Neon Vision Glasses</h3>
+            <div class="product-rating">
+              ★★★★☆ <span>(128)</span>
+            </div>
+            <div class="product-footer">
+              <span class="product-price">$29.99</span>
+              <button class="cyber-button-small">ADD TO CART</button>
+            </div>
+          </div>
         </div>
-        <h3>Quantum Mechanical Keyboard</h3>
-        <div class="product-rating">
-          ★★★★★ <span>(256)</span>
+        
+        <!-- Product Card 2 -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="cyber-product-card h-100">
+            <div class="product-image-container">
+              <img src="freepik__the-style-is-candid-image-photography-with-natural__3415.jpeg" alt="Quantum Keyboard" class="product-image img-fluid">
+            </div>
+            <h3>Quantum Mechanical Keyboard</h3>
+            <div class="product-rating">
+              ★★★★★ <span>(256)</span>
+            </div>
+            <div class="product-footer">
+              <span class="product-price">$18.99</span>
+              <button class="cyber-button-small">ADD TO CART</button>
+            </div>
+          </div>
         </div>
-        <div class="product-footer">
-          <span class="product-price">$189.99</span>
-          <button class="cyber-button-small">ADD TO CART</button>
-        </div>
-      </div>
-      
-      <!-- Product Card 3 -->
-      <div class="cyber-product-card">
-        <div class="product-badge">SALE</div>
-        <div class="product-image-container">
-          <img src="https://c3.iggcdn.com/indiegogo-media-prod-cld/image/upload/c_fill,g_auto,q_auto,f_auto,h_460,w_695/diuxyutj2z6cdcrztffw" alt="Holo Watch" class="product-image">
-        </div>
-        <h3>Holographic Smart Watch</h3>
-        <div class="product-rating">
-          ★★★★☆ <span>(84)</span>
-        </div>
-        <div class="product-footer">
-          <span class="product-price">$249.99</span>
-          <button class="cyber-button-small">ADD TO CART</button>
+        
+        <!-- Product Card 3 -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="cyber-product-card h-100">
+            <div class="product-badge">SALE</div>
+            <div class="product-image-container">
+              <img src="https://c3.iggcdn.com/indiegogo-media-prod-cld/image/upload/c_fill,g_auto,q_auto,f_auto,h_460,w_695/diuxyutj2z6cdcrztffw" alt="Holo Watch" class="product-image img-fluid">
+            </div>
+            <h3>Holographic Smart Watch</h3>
+            <div class="product-rating">
+              ★★★★☆ <span>(84)</span>
+            </div>
+            <div class="product-footer">
+              <span class="product-price">$149.99</span>
+              <button class="cyber-button-small">ADD TO CART</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 3D Product Viewer -->
-<section class="cyber-section bg-cyber-gray">
-    <h2 class="cyber-section-title">EXPERIENCE IN <span>3D</span></h2>
-    
-    <div class="cyber-3d-viewer">
-      <div class="cyber-3d-container">
-        <img src="image_fx_ (3).jpg" alt="3D Product Experience" class="cyber-3d-image">
-      </div>
-      <div class="cyber-3d-details">
-        <h3>Neon Cyber Jacket</h3>
-        <p class="cyber-product-description">This jacket features adaptive color-changing nanofibers with built-in temperature regulation and LED illumination system.</p>
-        <div class="cyber-product-options">
-          <div class="option-group">
-            <label>Size:</label>
-            <select class="cyber-select">
-              <option>S</option>
-              <option>M</option>
-              <option>L</option>
-              <option>XL</option>
-            </select>
-          </div>
-          <div class="option-group">
-            <label>Color:</label>
-            <div class="color-options">
-                <button class="color-option color-black" title="Noir"></button>
-                <button class="color-option color-blue" title="Bleu"></button>
-                <button class="color-option color-red" title="Rouge"></button>
-              </div>
+  <section class="cyber-section bg-cyber-gray py-5">
+    <div class="container">
+      <h2 class="cyber-section-title text-center mb-5">EXPERIENCE IN <span>3D</span></h2>
+      
+      <div class="row align-items-center">
+        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+          <div class="cyber-3d-container">
+            <img id="jacket-image" src="jacket-noir.jpg" alt="Neon Cyber Jacket" class="cyber-3d-image img-fluid">
           </div>
         </div>
-        <button class="cyber-button-primary">PRE-ORDER NOW</button>
+        <div class="col-12 col-lg-6">
+          <div class="cyber-3d-details">
+            <h3>Neon Cyber Jacket</h3>
+            <p class="cyber-product-description">This jacket features adaptive color-changing nanofibers with built-in temperature regulation and LED illumination system.</p>
+            <div class="cyber-product-options">
+              <div class="option-group mb-3">
+                <label class="d-block mb-2">Size:</label>
+                <select class="cyber-select form-select">
+                  <option>S</option>
+                  <option>M</option>
+                  <option>L</option>
+                  <option>XL</option>
+                </select>
+              </div>
+              <div class="option-group mb-4">
+                <label class="d-block mb-2">Color:</label>
+                <div class="color-options">
+                  <button class="color-option color-black selected" data-image="jacket-noir.jpg" title="Noir"></button>
+                  <button class="color-option color-blue" data-image="jacket-bleu.jpg" title="Bleu"></button>
+                  <button class="color-option color-red" data-image="jacket-rouge.jpg" title="Rouge"></button>
+                </div>
+              </div>
+            </div>
+            <button class="cyber-button-primary w-100">PRE-ORDER NOW</button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Newsletter -->
-  <section class="cyber-newsletter">
-    <div class="cyber-newsletter-content">
-      <h2>JOIN THE NEXUS</h2>
-      <p>Subscribe to get exclusive offers and early access to new products</p>
-      <form class="cyber-newsletter-form">
-        <input type="email" placeholder="Your email address" required class="cyber-input">
-        <button type="submit" class="cyber-button-secondary">SUBSCRIBE</button>
-      </form>
+  <section class="cyber-newsletter py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 text-center">
+          <div class="cyber-newsletter-content">
+            <h2>JOIN THE NEXUS</h2>
+            <p class="mb-4">Subscribe to get exclusive offers and early access to new products</p>
+            <form class="cyber-newsletter-form row g-2 justify-content-center">
+              <div class="col-12 col-md-8">
+                <input type="email" placeholder="Your email address" required class="cyber-input form-control">
+              </div>
+              <div class="col-12 col-md-4">
+                <button type="submit" class="cyber-button-secondary w-100">SUBSCRIBE</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="cyber-footer">
-    <div class="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div class="footer-col">
-        <h3 class="footer-title">NEXUS</h3>
-        <p class="footer-text">The future of shopping is here. Immerse yourself in our cyberpunk-inspired marketplace.</p>
-      </div>
-      <div class="footer-col">
-        <h3 class="footer-title">SHOP</h3>
-        <ul class="footer-links">
-          <li><a href="#">New Arrivals</a></li>
-          <li><a href="#">Best Sellers</a></li>
-          <li><a href="#">Limited Edition</a></li>
-          <li><a href="#">Upcoming Tech</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h3 class="footer-title">SUPPORT</h3>
-        <ul class="footer-links">
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">FAQs</a></li>
-          <li><a href="#">Shipping</a></li>
-          <li><a href="#">Returns</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h3 class="footer-title">CONNECT</h3>
-        <div class="footer-social">
-          <a href="#" class="social-icon">Twitter</a>
-          <a href="#" class="social-icon">Instagram</a>
-          <a href="#" class="social-icon">Facebook</a>
+  <footer class="cyber-footer py-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="footer-col">
+            <h3 class="footer-title">NEXUS</h3>
+            <p class="footer-text">The future of shopping is here. Immerse yourself in our cyberpunk-inspired marketplace.</p>
+          </div>
+        </div>
+        <div class="col-6 col-md-6 col-lg-3">
+          <div class="footer-col">
+            <h3 class="footer-title">SHOP</h3>
+            <ul class="footer-links">
+              <li><a href="#">New Arrivals</a></li>
+              <li><a href="#">Best Sellers</a></li>
+              <li><a href="#">Limited Edition</a></li>
+              <li><a href="#">Upcoming Tech</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-6 col-md-6 col-lg-3">
+          <div class="footer-col">
+            <h3 class="footer-title">SUPPORT</h3>
+            <ul class="footer-links">
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Shipping</a></li>
+              <li><a href="#">Returns</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="footer-col">
+            <h3 class="footer-title">CONNECT</h3>
+            <div class="footer-social">
+              <a href="#" class="social-icon">Twitter</a>
+              <a href="#" class="social-icon">Instagram</a>
+              <a href="#" class="social-icon">Facebook</a>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 NexusStore. All rights reserved.</p>
+      <div class="footer-bottom text-center mt-5 pt-3">
+        <p>© 2025 NexusStore. All rights reserved.</p>
+      </div>
     </div>
   </footer>
 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
