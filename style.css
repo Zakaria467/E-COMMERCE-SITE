@@ -37,6 +37,14 @@ body.light-mode .cyber-newsletter {
   background: linear-gradient(135deg, var(--gray-light), var(--bg-light));
 }
 
+body.light-mode .cyber-hero {
+  background-color: var(--bg-light);
+}
+
+body.light-mode .cyber-hero::before {
+  background: rgba(255, 255, 255, 0.7);
+}
+
 /* Footer text colors */
 body.light-mode .footer-text,
 body.light-mode .footer-links a,
@@ -75,6 +83,67 @@ body.dark-mode .social-icon {
 
 body.light-mode .social-icon {
   color: var(--text-dark) !important;
+}
+
+/* Navbar en mode sombre */
+body.dark-mode .navbar-nav .nav-link {
+  color: white !important;
+  transition: all 0.3s ease;
+}
+
+body.dark-mode .navbar-nav .nav-link:hover {
+  color: var(--neon-blue) !important;
+}
+
+body.dark-mode .navbar-nav .nav-link::before {
+  background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Menu mobile en mode sombre */
+@media (max-width: 768px) {
+  body.dark-mode .navbar-collapse {
+    background-color: var(--gray-dark);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+  }
+  
+  body.dark-mode .navbar-nav .nav-link {
+    color: white !important;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem 0;
+    transition: all 0.3s ease;
+  }
+  
+  body.dark-mode .navbar-nav .nav-link:hover {
+    color: var(--neon-blue) !important;
+    background-color: rgba(0, 255, 255, 0.1);
+    border-radius: 0.25rem;
+  }
+  
+  body.light-mode .navbar-collapse {
+    background-color: var(--gray-light);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  body.light-mode .navbar-nav .nav-link {
+    color: var(--text-dark) !important;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem 0;
+  }
+  
+  body.light-mode .navbar-nav .nav-link:hover {
+    color: var(--neon-blue) !important;
+    background-color: rgba(0, 255, 255, 0.1);
+    border-radius: 0.25rem;
+  }
 }
 
 /* Styles pour la zone de sélection des tailles */
@@ -289,14 +358,21 @@ body {
   padding-bottom: 1.5rem;
 }
 
-.cyber-link {
+/* Navigation Links */
+.nav-link {
   position: relative;
   font-size: 1.125rem;
   font-weight: 500;
   text-decoration: none;
+  transition: all 0.3s ease;
+  color: white; /* Default dark mode color */
 }
 
-.cyber-link::after {
+body.light-mode .nav-link {
+  color: var(--text-dark);
+}
+
+.nav-link::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -307,8 +383,75 @@ body {
   transition: width 0.3s ease;
 }
 
-.cyber-link:hover::after {
+.nav-link:hover::after {
   width: 100%;
+}
+
+/* Navigation Container */
+.nav-container {
+  position: relative;
+  display: flex;
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  padding: 0.5rem;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+body.light-mode .nav-container {
+  background: rgba(240, 240, 240, 0.8);
+}
+
+/* Enhanced Nav Links */
+.nav-link {
+  position: relative;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  z-index: 1;
+  transition: all 0.3s ease;
+  border-radius: 30px;
+}
+
+.nav-link::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-link:hover {
+  transform: translateY(-2px);
+}
+
+.nav-link:hover::before {
+  opacity: 1;
+}
+
+.nav-indicator {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  height: calc(100% - 1rem);
+  background: rgba(0, 255, 255, 0.2);
+  border-radius: 30px;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 0;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(0, 255, 255, 0.1);
 }
 
 /* Button Styles */
@@ -384,6 +527,7 @@ body {
   overflow: hidden;
   background: url('https://via.placeholder.com/1920x1080') no-repeat center center;
   background-size: cover;
+  transition: background-color 0.3s ease;
 }
 
 .cyber-hero::before {
@@ -391,6 +535,7 @@ body {
   position: absolute;
   inset: 0;
   background: rgba(10, 10, 18, 0.7);
+  transition: background 0.3s ease;
 }
 
 .cyber-hero-content {
@@ -691,6 +836,7 @@ body {
   box-shadow: 0 0 0 2px var(--neon-blue);
   border-color: var(--neon-pink);
 }
+
 /* Placeholder */
 body.light-mode .cyber-input::placeholder {
   color: #666;
@@ -878,67 +1024,6 @@ body.dark-mode .cyber-input {
   0% { background-position: 0% center; }
   50% { background-position: 100% center; }
   100% { background-position: 0% center; }
-}
-
-.nav-container {
-  position: relative;
-  display: flex;
-  background: rgba(26, 26, 46, 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: 50px;
-  padding: 0.5rem;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-}
-
-.nav-link {
-  position: relative;
-  padding: 0.75rem 1.5rem;
-  text-decoration: none;
-  font-family: 'Rajdhani', sans-serif;
-  font-weight: 600;
-  font-size: 1.1rem;
-  z-index: 1;
-  transition: all 0.3s ease;
-  border-radius: 30px;
-}
-
-.nav-link::before {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.nav-link:hover {
-  transform: translateY(-2px);
-}
-
-.nav-link:hover::before {
-  opacity: 1;
-}
-
-.nav-indicator {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  height: calc(100% - 1rem);
-  background: rgba(0, 255, 255, 0.2);
-  border-radius: 30px;
-  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  z-index: 0;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(0, 255, 255, 0.1);
 }
 
 /* Bouton Dark Mode */
