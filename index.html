@@ -78,7 +78,18 @@
 
 <script>
   document.getElementById('loginBtn').addEventListener('click', function() {
-    window.location.href = 'login.html';
+    // Vérifie si login.html existe avant de rediriger
+    fetch('login.html', { method: 'HEAD' })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = 'login.html';
+        } else {
+          alert("La page de connexion n'existe pas !");
+        }
+      })
+      .catch(() => {
+        alert("Erreur lors de la tentative d'accès à la page de connexion.");
+      });
   });
 </script>
             </div>
