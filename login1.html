@@ -1,572 +1,574 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <title>Connexion | Plateforme Nexus</title>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <style>
-        :root {
-            --nexus-primary: #4a00e0;
-            --nexus-secondary: #8e2de2;
-            --nexus-accent: #00d2ff;
-            --nexus-dark: #1a1a2e;
-            --nexus-light: #f8f9fa;
-            --nexus-danger: #e63946;
-            --nexus-success: #2ecc71;
-            --nexus-warning: #f39c12;
-            --nexus-border-radius: 12px;
-            --nexus-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            --nexus-transition: all 0.3s ease;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion / Création de compte</title>
+  <link rel="stylesheet" href="style1.css" />
+  <link rel="stylesheet" href="toogle switch/robot.css" />
+  
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      min-width: 100vw;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      transition: background 0.4s;
+    }
+    body.light-mode {
+      background: #f5f7fa;
+    }
+    .animated-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(120deg, #1c1c1c 60%, #00eeff22 100%);
+      overflow: hidden;
+      transition: background 0.4s;
+    }
+    body.light-mode .animated-bg {
+      background: linear-gradient(120deg, #f5f7fa 60%, #b2f7ff22 100%);
+    }
+    .color-wave {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.7;
+      animation: moveWave 12s linear infinite alternate;
+    }
+    .color-wave.wave1 {
+      width: 700px; height: 700px;
+      background: #00eeff;
+      top: -200px; left: -200px;
+      animation-delay: 0s;
+    }
+    .color-wave.wave2 {
+      width: 600px; height: 600px;
+      background: #ff00bb;
+      bottom: -180px; right: -180px;
+      animation-delay: 2s;
+    }
+    .color-wave.wave3 {
+      width: 400px; height: 400px;
+      background: #00ffb3;
+      top: 60%; left: 60%;
+      animation-delay: 4s;
+    }
+    @keyframes moveWave {
+      0% { transform: scale(1) translateY(0) translateX(0);}
+      100% { transform: scale(1.2) translateY(40px) translateX(40px);}
+    }
+    .box {
+      z-index: 2;
+      background: #1c1c1c;
+      box-shadow: 0 8px 32px 0 #00eeff33;
+      border-radius: 10px;
+      position: relative;
+      transition: min-height 0.4s, background 0.4s;
+      min-width: 340px;
+      max-width: 98vw;
+      width: 380px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 0 24px 0;
+      overflow: hidden;
+    }
+    body.light-mode .box {
+      background: #fff;
+      box-shadow: 0 8px 32px 0 #00eeff11;
+    }
+    .border-line {
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .theme-toggle-container {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 18px 24px 0 0;
+      z-index: 3;
+      position: relative;
+    }
+    .theme-toggle-global-container {
+      position: fixed;
+      top: 32px;
+      right: 40px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    @media (max-width: 600px) {
+      .box { width: 99vw; min-width: unset; }
+      .social-login { gap: 10px; }
+      form { padding: 0 2vw; }
+      .theme-toggle-global-container {
+        top: 12px;
+        right: 10px;
+      }
+    }
+    form {
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto;
+      background: transparent;
+      box-shadow: none;
+      padding: 0 18px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      transition: min-height 0.4s;
+    }
+    h2 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 0.5em;
+      font-size: 2rem;
+      letter-spacing: 1px;
+      width: 100%;
+      transition: color 0.4s;
+    }
+    body.light-mode h2 {
+      color: #222 !important;
+      text-shadow: 0 1px 0 #fff, 0 0 2px #fff;
+    }
+    .input-box {
+      width: 100%;
+      margin-top: 20px;
+      position: relative;
+    }
+    .input-box input {
+      width: 100%;
+      padding: 10px 8px 10px 8px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #fff;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s, color 0.4s;
+    }
+    .input-box input:focus {
+      border-bottom: 2px solid #00eeff;
+    }
+    .input-box span {
+      position: absolute;
+      left: 8px;
+      top: 10px;
+      color: #aaa;
+      font-size: 1rem;
+      pointer-events: none;
+      transition: 0.2s;
+    }
+    .input-box input:focus + span,
+    .input-box input:not(:placeholder-shown) + span {
+      top: -16px;
+      left: 0;
+      font-size: 0.85em;
+      color: #00eeff;
+    }
+    .input-box i {
+      display: none;
+    }
+    .imp-links {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      font-size: 0.95em;
+      margin-top: 10px;
+    }
+    .imp-links a {
+      color: #00eeff;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .imp-links a:hover {
+      color: #ff00bb;
+    }
+    .btn {
+      width: 100%;
+      padding: 12px 0;
+      background: linear-gradient(90deg, #00eeff 60%, #ff00bb 100%);
+      color: #fff;
+      border: none;
+      border-radius: 45px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 24px;
+      cursor: pointer;
+      box-shadow: 0 0 16px #00eeff55;
+      transition: background 0.3s, box-shadow 0.3s, color 0.4s;
+    }
+    .btn:hover {
+      background: linear-gradient(90deg, #ff00bb 60%, #00eeff 100%);
+      box-shadow: 0 0 32px #ff00bb55;
+    }
+    .switch-question {
+      text-align: center;
+      margin-top: 1.5em;
+      color: #fff;
+      font-size: 1rem;
+      transition: color 0.4s;
+    }
+    body.light-mode .switch-question {
+      color: #222 !important;
+      text-shadow: 0 1px 0 #fff, 0 0 2px #fff;
+    }
+    .switch-link {
+      color: #00eeff;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-left: 6px;
+      transition: color 0.2s;
+    }
+    body.light-mode .switch-link {
+      color: #0077b6 !important;
+      text-shadow: 0 1px 0 #fff, 0 0 2px #fff;
+    }
+    .hidden { display: none !important; }
+    .social-login {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 18px;
+      margin-bottom: 0.5em;
+    }
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: #23242a;
+      color: #fff;
+      font-size: 1.5rem;
+      box-shadow: 0 2px 12px #00eeff22;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      outline: none;
+      border: 2px solid transparent;
+    }
+    .social-btn.facebook { color: #1877f3; border-color: #1877f3; }
+    .social-btn.instagram { color: #e1306c; border-color: #e1306c; }
+    .social-btn.whatsapp { color: #25d366; border-color: #25d366; }
+    .social-btn:hover {
+      background: #19191a;
+      transform: scale(1.12);
+    }
+    .toggle-switch-robot {
+      display: inline-block;
+      cursor: pointer;
+      position: relative;
+      width: 180px;
+      height: 90px;
+    }
+    .toggle-switch-robot input {
+      display: none;
+    }
+    .slider-robot {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, #4b3b6b 60%, #b3e6ff 100%);
+      border-radius: 45px;
+      transition: background 0.4s;
+      overflow: hidden;
+      box-shadow: 0 2px 8px #0002;
+    }
+    .robot-head {
+      position: absolute;
+      left: 18px; top: 10px;
+      width: 54px; height: 54px;
+      background: #fff;
+      border-radius: 50%;
+      border: 4px solid #ff9800;
+      z-index: 2;
+      transition: left 0.4s;
+      box-shadow: 0 2px 8px #0002;
+    }
+    .toggle-switch-robot input:checked + .slider-robot .robot-head {
+      left: 108px;
+    }
+    .robot-face {
+      position: absolute;
+      left: 13px; top: 13px;
+      width: 28px; height: 28px;
+      background: #fff3e0;
+      border-radius: 50%;
+      border: 2px solid #ff9800;
+    }
+    .robot-eyes {
+      position: absolute;
+      left: 22px; top: 22px;
+      width: 10px; height: 10px;
+      background: #222;
+      border-radius: 50%;
+    }
+    .slider-robot:before {
+      content: "";
+      position: absolute;
+      left: 70px; top: 25px;
+      width: 80px; height: 40px;
+      background: linear-gradient(90deg, #b3e6ff 60%, #ffe0b2 100%);
+      border-radius: 20px;
+      z-index: 1;
+    }
+    .theme-toggle-global-container {
+      position: fixed;
+      top: 32px;
+      right: 40px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    @media (max-width: 600px) {
+      .box { width: 99vw; min-width: unset; }
+      .social-login { gap: 10px; }
+      form { padding: 0 2vw; }
+      .theme-toggle-global-container {
+        top: 12px;
+        right: 10px;
+      }
+    }
 
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--nexus-dark), #16213e);
-            color: var(--nexus-light);
-            display: flex;
-            align-items: center;
-        }
+    h2,
+    .switch-question {
+      color: #fff;
+      transition: color 0.4s;
+    }
 
-        .nexus-container {
-            width: 100%;
-            max-width: 500px;
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: var(--nexus-border-radius);
-            padding: 2.5rem;
-            box-shadow: var(--nexus-box-shadow);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 2rem auto;
-        }
+    body.light-mode h2,
+    body.light-mode .switch-question {
+      color: #222;
+    }
 
-        .nexus-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+    .switch-link {
+      color: #00eeff;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-left: 6px;
+      transition: color 0.2s;
+    }
 
-        .nexus-logo {
-            width: 80px;
-            height: auto;
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 10px rgba(74, 0, 224, 0.5));
-        }
+    body.light-mode .switch-link {
+      color: #0077b6;
+    }
 
-        .nexus-header h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(to right, var(--nexus-primary), var(--nexus-accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    /* Ajoutez ce bloc à la fin de votre <style> ou dans style1.css */
 
-        .nexus-tagline {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 1.5rem;
-        }
+    /* Pour le titre "Sign in" et "Sign up" */
+    body.light-mode h2 {
+      color: #222 !important;
+      text-shadow: 0 1px 0 #fff, 0 0 2px #fff;
+    }
 
-        .form-control {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--nexus-light);
-            padding: 12px 15px 12px 40px;
-        }
+    /* Pour la question sous le formulaire */
+    body.light-mode .switch-question {
+      color: #222 !important;
+      text-shadow: 0 1px 0 #fff, 0 0 2px #fff;
+    }
 
-        .form-control:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--nexus-accent);
-            box-shadow: 0 0 0 0.25rem rgba(0, 210, 255, 0.25);
-            color: var(--nexus-light);
-        }
+    /* Pour le lien "Sign up" et "Sign in" */
+    body.light-mode .switch-link {
+      color: #0077b6 !important;
+      text-shadow: 0 1px 0 #fff, 0 0 2px #fff;
+    }
 
-        .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.6);
-            z-index: 4;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.6);
-            cursor: pointer;
-            z-index: 4;
-        }
-
-        .nexus-btn {
-            background: linear-gradient(to right, var(--nexus-primary), var(--nexus-secondary));
-            color: white;
-            border: none;
-            padding: 12px;
-            font-weight: 500;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nexus-btn:hover {
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(74, 0, 224, 0.4);
-        }
-
-        .nexus-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .nexus-btn:hover::before {
-            left: 100%;
-        }
-
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 1rem 0;
-        }
-
-        .form-link {
-            color: var(--nexus-accent);
-            text-decoration: none;
-        }
-
-        .form-link:hover {
-            text-decoration: underline;
-            color: var(--nexus-primary);
-        }
-
-        .social-login {
-            text-align: center;
-            margin: 1.5rem 0;
-        }
-
-        .social-btn {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            color: white;
-            margin: 0 5px;
-        }
-
-        .social-btn.google {
-            background: #db4437;
-        }
-
-        .social-btn.microsoft {
-            background: #0078d7;
-        }
-
-        .social-btn.apple {
-            background: #000000;
-        }
-
-        .nexus-footer {
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .form-switch .form-check-input {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .form-switch .form-check-input:checked {
-            background-color: var(--nexus-accent);
-            border-color: var(--nexus-accent);
-        }
-
-        /* Animation entre les formulaires */
-        .form-container {
-            position: relative;
-            min-height: 400px;
-        }
-
-        .form-page {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        .form-page.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        /* Alertes */
-        .nexus-alert {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: var(--nexus-border-radius);
-            color: white;
-            font-size: 0.9rem;
-            font-weight: 500;
-            box-shadow: var(--nexus-box-shadow);
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nexus-alert.success {
-            background: var(--nexus-success);
-        }
-
-        .nexus-alert.error {
-            background: var(--nexus-danger);
-        }
-
-        .nexus-alert.show {
-            transform: translateX(0);
-        }
-
-        @media (max-width: 576px) {
-            .nexus-container {
-                padding: 1.5rem;
-                margin: 1rem;
-            }
-            
-            .form-options {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-    </style>
+    /* Pour garantir la visibilité même si d'autres styles sont appliqués */
+    body.light-mode h2,
+    body.light-mode .switch-question,
+    body.light-mode .switch-link {
+      opacity: 1 !important;
+      filter: none !important;
+    }
+  </style>
+  <!-- Icônes FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 </head>
-
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="nexus-container">
-                    <div class="nexus-header">
-                        <div class="nexus-logo">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-                                <circle cx="50" cy="50" r="45" fill="url(#nexus-gradient)" stroke="#00d2ff" stroke-width="2"/>
-                                <path d="M50 20L70 50L50 80L30 50L50 20Z" fill="white"/>
-                                <defs>
-                                    <linearGradient id="nexus-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stop-color="#4a00e0"/>
-                                        <stop offset="100%" stop-color="#8e2de2"/>
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                        </div>
-                        <h1>NEXUS</h1>
-                        <p class="nexus-tagline">Connectez-vous à votre univers digital</p>
-                    </div>
-                    
-                    <div class="form-container">
-                        <!-- Formulaire de connexion -->
-                        <form class="form-page active" id="loginForm">
-                            <div class="input-group">
-                                <i class="fas fa-user input-icon"></i>
-                                <input type="text" class="form-control" id="loginUsername" placeholder=" " required>
-                                <label for="loginUsername" class="form-label position-absolute ms-4">Identifiant</label>
-                            </div>
-                            
-                            <div class="input-group">
-                                <i class="fas fa-lock input-icon"></i>
-                                <input type="password" class="form-control" id="loginPassword" placeholder=" " required>
-                                <label for="loginPassword" class="form-label position-absolute ms-4">Mot de passe</label>
-                                <i class="fas fa-eye password-toggle" id="toggleLoginPassword"></i>
-                            </div>
-                            
-                            <div class="form-options">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="rememberMe">
-                                    <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
-                                </div>
-                                <a href="#" class="form-link">Mot de passe oublié ?</a>
-                            </div>
-                            
-                            <button type="submit" class="btn nexus-btn mb-3">
-                                <span>Connexion Sécurisée</span>
-                            </button>
-                            
-                            <div class="text-center mt-3">
-                                <p>Nouveau sur Nexus ? <a href="#" class="form-link" id="showRegister">Créer un compte</a></p>
-                            </div>
-                        </form>
-                        
-                        <!-- Formulaire d'inscription -->
-                        <form class="form-page" id="registerForm">
-                            <div class="input-group">
-                                <i class="fas fa-user input-icon"></i>
-                                <input type="text" class="form-control" id="registerUsername" placeholder=" " required>
-                                <label for="registerUsername" class="form-label position-absolute ms-4">Nom d'utilisateur</label>
-                            </div>
-                            
-                            <div class="input-group">
-                                <i class="fas fa-envelope input-icon"></i>
-                                <input type="email" class="form-control" id="registerEmail" placeholder=" " required>
-                                <label for="registerEmail" class="form-label position-absolute ms-4">Adresse email</label>
-                            </div>
-                            
-                            <div class="input-group">
-                                <i class="fas fa-lock input-icon"></i>
-                                <input type="password" class="form-control" id="registerPassword" placeholder=" " required>
-                                <label for="registerPassword" class="form-label position-absolute ms-4">Mot de passe</label>
-                                <i class="fas fa-eye password-toggle" id="toggleRegisterPassword"></i>
-                            </div>
-                            
-                            <div class="input-group">
-                                <i class="fas fa-lock input-icon"></i>
-                                <input type="password" class="form-control" id="registerConfirmPassword" placeholder=" " required>
-                                <label for="registerConfirmPassword" class="form-label position-absolute ms-4">Confirmer le mot de passe</label>
-                            </div>
-                            
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="acceptTerms" required>
-                                <label class="form-check-label" for="acceptTerms">
-                                    J'accepte les <a href="#" class="form-link">conditions d'utilisation</a>
-                                </label>
-                            </div>
-                            
-                            <button type="submit" class="btn nexus-btn mb-3">
-                                <span>S'inscrire</span>
-                            </button>
-                            
-                            <div class="text-center mt-3">
-                                <p>Déjà membre ? <a href="#" class="form-link" id="showLogin">Se connecter</a></p>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <div class="nexus-footer">
-                        <p>© 2025 Plateforme Nexus. Tous droits réservés.</p>
-                        <div class="d-flex justify-content-center gap-3">
-                            <a href="#" class="text-decoration-none text-muted">Confidentialité</a>
-                            <a href="#" class="text-decoration-none text-muted">Conditions</a>
-                            <a href="#" class="text-decoration-none text-muted">Assistance</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- Toggle Switch BB8 EN HAUT DE PAGE -->
+  <div class="theme-toggle-global-container">
+    <label class="bb8-toggle" title="Changer le thème">
+      <input class="bb8-toggle__checkbox" id="themeSwitch" type="checkbox">
+      <div class="bb8-toggle__container">
+        <div class="bb8-toggle__scenery">
+          <div class="bb8-toggle__star"></div>
+          <div class="bb8-toggle__star"></div>
+          <div class="bb8-toggle__star"></div>
+          <div class="bb8-toggle__star"></div>
+          <div class="bb8-toggle__star"></div>
+          <div class="bb8-toggle__star"></div>
+          <div class="bb8-toggle__star"></div>
+          <div class="tatto-1"></div>
+          <div class="tatto-2"></div>
+          <div class="gomrassen"></div>
+          <div class="hermes"></div>
+          <div class="chenini"></div>
+          <div class="bb8-toggle__cloud"></div>
+          <div class="bb8-toggle__cloud"></div>
+          <div class="bb8-toggle__cloud"></div>
         </div>
-    </div>
-    
-    <!-- Messages d'alerte -->
-    <div class="nexus-alert" id="alertBox"></div>
+        <div class="bb8">
+          <div class="bb8__head-container">
+            <div class="bb8__antenna"></div>
+            <div class="bb8__antenna"></div>
+            <div class="bb8__head"></div>
+          </div>
+          <div class="bb8__body"></div>
+        </div>
+        <div class="artificial__hidden">
+          <div class="bb8__shadow"></div>
+        </div>
+      </div>
+    </label>
+  </div>
+  <div class="animated-bg">
+    <div class="color-wave wave1"></div>
+    <div class="color-wave wave2"></div>
+    <div class="color-wave wave3"></div>
+  </div>
+  <div class="box" id="formBox">
+    <div class="border-line"></div>
+    <!-- Sign In Form -->
+    <form id="loginForm" autocomplete="off">
+      <h2>Sign in</h2>
+      <div class="social-login">
+        <button type="button" class="social-btn facebook" title="Facebook" onclick="window.open('https://www.facebook.com/?locale=fr_FR')">
+          <i class="fab fa-facebook-f"></i>
+        </button>
+        <button type="button" class="social-btn instagram" title="Instagram" onclick="window.open('https://www.instagram.com/')">
+          <i class="fab fa-instagram"></i>
+        </button>
+        <button type="button" class="social-btn whatsapp" title="WhatsApp" onclick="window.open('https://www.whatsapp.com/?lang=fr_FR')">
+          <i class="fab fa-whatsapp"></i>
+        </button>
+      </div>
+      <div class="input-box">
+        <input type="text" required="required" placeholder=" " />
+        <span>Username</span>
+      </div>
+      <div class="input-box">
+        <input type="password" required="required" placeholder=" " />
+        <span>Password</span>
+      </div>
+      <div class="imp-links">
+        <a href="#">Forget Password</a>
+      </div>
+      <input type="submit" value="Login" class="btn" />
+      <div class="switch-question">
+        You don't have an account?
+        <span class="switch-link" onclick="showSignup()">Sign up</span>
+      </div>
+    </form>
+    <!-- Sign Up Form -->
+    <form id="signupForm" class="hidden" autocomplete="off">
+      <h2>Sign up</h2>
+      <div class="social-login">
+        <button type="button" class="social-btn facebook" title="Facebook" onclick="window.open('https://www.facebook.com/?locale=fr_FR')">
+          <i class="fab fa-facebook-f"></i>
+        </button>
+        <button type="button" class="social-btn instagram" title="Instagram" onclick="window.open('https://www.instagram.com/')">
+          <i class="fab fa-instagram"></i>
+        </button>
+        <button type="button" class="social-btn whatsapp" title="WhatsApp" onclick="window.open('https://www.whatsapp.com/?lang=fr_FR')">
+          <i class="fab fa-whatsapp"></i>
+        </button>
+      </div>
+      <div class="input-box">
+        <input type="text" required="required" placeholder=" " />
+        <span>Username</span>
+      </div>
+      <div class="input-box">
+        <input type="email" required="required" placeholder=" " />
+        <span>Email</span>
+      </div>
+      <div class="input-box">
+        <input type="password" required="required" placeholder=" " />
+        <span>Password</span>
+      </div>
+      <div class="input-box">
+        <input type="password" required="required" placeholder=" " />
+        <span>Confirm Password</span>
+      </div>
+      <input type="submit" value="Create Account" class="btn" />
+      <div class="switch-question">
+        Already have an account?
+        <span class="switch-link" onclick="showLogin()">Sign in</span>
+      </div>
+    </form>
+  </div>
+  <script>
+    // Ajustement dynamique de la hauteur de la box selon le formulaire affiché
+    function adjustBoxHeight() {
+      const box = document.getElementById('formBox');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      let visibleForm = !loginForm.classList.contains('hidden') ? loginForm : signupForm;
+      // On attend le rendu pour avoir la bonne hauteur
+      setTimeout(() => {
+        box.style.minHeight = (visibleForm.scrollHeight + 40) + "px";
+      }, 50);
+    }
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Gestion de la visibilité des mots de passe
-            const toggleLoginPassword = document.getElementById('toggleLoginPassword');
-            const loginPassword = document.getElementById('loginPassword');
-            
-            const toggleRegisterPassword = document.getElementById('toggleRegisterPassword');
-            const registerPassword = document.getElementById('registerPassword');
-            
-            if (toggleLoginPassword && loginPassword) {
-                toggleLoginPassword.addEventListener('click', function() {
-                    const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-                    loginPassword.setAttribute('type', type);
-                    this.classList.toggle('fa-eye-slash');
-                });
-            }
-            
-            if (toggleRegisterPassword && registerPassword) {
-                toggleRegisterPassword.addEventListener('click', function() {
-                    const type = registerPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-                    registerPassword.setAttribute('type', type);
-                    this.classList.toggle('fa-eye-slash');
-                });
-            }
-            
-            // Gestion de la navigation entre les formulaires
-            const showRegister = document.getElementById('showRegister');
-            const showLogin = document.getElementById('showLogin');
-            const loginForm = document.getElementById('loginForm');
-            const registerForm = document.getElementById('registerForm');
-            
-            if (showRegister && showLogin) {
-                showRegister.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    loginForm.classList.remove('active');
-                    registerForm.classList.add('active');
-                });
-                
-                showLogin.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    registerForm.classList.remove('active');
-                    loginForm.classList.add('active');
-                });
-            }
-            
-            // Gestion des soumissions de formulaire
-            const alertBox = document.getElementById('alertBox');
-            
-            if (loginForm) {
-                loginForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    showAlert('Connexion en cours...', 'info');
-                    
-                    // Simulation de vérification
-                    setTimeout(() => {
-                        const username = document.getElementById('loginUsername').value;
-                        const password = document.getElementById('loginPassword').value;
-                        
-                        if (username && password) {
-                            if (password.length < 6) {
-                                showAlert('Le mot de passe doit contenir au moins 6 caractères', 'error');
-                            } else {
-                                showAlert('Connexion réussie! Redirection en cours...', 'success');
-                                // window.location.href = '/dashboard';
-                            }
-                        } else {
-                            showAlert('Veuillez remplir tous les champs', 'error');
-                        }
-                    }, 1500);
-                });
-            }
-        
-            if (registerForm) {
-                registerForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    showAlert('Création du compte en cours...', 'info');
-                    
-                    // Simulation de vérification
-                    setTimeout(() => {
-                        const username = document.getElementById('registerUsername').value;
-                        const email = document.getElementById('registerEmail').value;
-                        const password = document.getElementById('registerPassword').value;
-                        const confirmPassword = document.getElementById('registerConfirmPassword').value;
-                        const acceptTerms = document.getElementById('acceptTerms').checked;
-                        
-                        if (!username || !email || !password || !confirmPassword) {
-                            showAlert('Veuillez remplir tous les champs', 'error');
-                            return;
-                        }
-                        
-                        if (password.length < 8) {
-                            showAlert('Le mot de passe doit contenir au moins 8 caractères', 'error');
-                            return;
-                        }
-                        
-                        if (password !== confirmPassword) {
-                            showAlert('Les mots de passe ne correspondent pas', 'error');
-                            return;
-                        }
-                        
-                        if (!acceptTerms) {
-                            showAlert('Vous devez accepter les conditions d\'utilisation', 'error');
-                            return;
-                        }
-                        
-                        showAlert('Compte créé avec succès!', 'success');
-                        
-                        // Retour au formulaire de connexion après inscription
-                        setTimeout(() => {
-                            registerForm.classList.remove('active');
-                            loginForm.classList.add('active');
-                            registerForm.reset();
-                        }, 2000);
-                    }, 1500);
-                });
-            }
-            
-            // Fonction d'affichage des alertes
-            function showAlert(message, type) {
-                if (!alertBox) return;
-                
-                alertBox.textContent = message;
-                alertBox.className = 'nexus-alert';
-                alertBox.classList.add(type, 'show');
-                
-                // Ajout d'icône
-                const icon = document.createElement('i');
-                if (type === 'success') {
-                    icon.className = 'fas fa-check-circle';
-                } else if (type === 'error') {
-                    icon.className = 'fas fa-exclamation-circle';
-                } else {
-                    icon.className = 'fas fa-info-circle';
-                }
-                
-                alertBox.insertBefore(icon, alertBox.firstChild);
-                
-                // Masquage après 5 secondes
-                setTimeout(() => {
-                    alertBox.classList.remove('show');
-                }, 5000);
-            }
-            
-            // Animation des étiquettes des champs de formulaire
-            const formInputs = document.querySelectorAll('.form-control');
-            formInputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    const label = this.nextElementSibling;
-                    if (label && label.classList.contains('form-label')) {
-                        label.style.transform = 'translateY(-25px) translateX(-15px) scale(0.85)';
-                        label.style.color = 'var(--nexus-accent)';
-                        label.style.backgroundColor = 'var(--nexus-dark)';
-                        label.style.padding = '0 5px';
-                        label.style.borderRadius = '4px';
-                    }
-                });
-                
-                input.addEventListener('blur', function() {
-                    const label = this.nextElementSibling;
-                    if (this.value === '' && label && label.classList.contains('form-label')) {
-                        label.style.transform = 'translateY(-50%)';
-                        label.style.color = 'rgba(255, 255, 255, 0.6)';
-                        label.style.backgroundColor = 'transparent';
-                        label.style.padding = '0';
-                    }
-                });
-                
-                // Initialisation pour les champs pré-remplis
-                if (input.value !== '') {
-                    const label = input.nextElementSibling;
-                    if (label && label.classList.contains('form-label')) {
-                        label.style.transform = 'translateY(-25px) translateX(-15px) scale(0.85)';
-                        label.style.color = 'var(--nexus-accent)';
-                        label.style.backgroundColor = 'var(--nexus-dark)';
-                        label.style.padding = '0 5px';
-                        label.style.borderRadius = '4px';
-                    }
-                }
-            });
-        });
-    </script>
+    // Afficher Sign in au chargement, cacher Sign up
+    document.getElementById('loginForm').classList.remove('hidden');
+    document.getElementById('signupForm').classList.add('hidden');
+    adjustBoxHeight();
+
+    function showSignup() {
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('signupForm').classList.remove('hidden');
+      adjustBoxHeight();
+    }
+    function showLogin() {
+      document.getElementById('signupForm').classList.add('hidden');
+      document.getElementById('loginForm').classList.remove('hidden');
+      adjustBoxHeight();
+    }
+
+    // Navigation par curseur (flèches gauche/droite)
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "ArrowRight") showSignup();
+      if (e.key === "ArrowLeft") showLogin();
+    });
+
+    // Active/désactive le mode clair avec le bouton BB8
+    const themeSwitch = document.getElementById('themeSwitch');
+    themeSwitch.addEventListener('change', function() {
+      if (this.checked) {
+        document.body.classList.add('light-mode');
+      } else {
+        document.body.classList.remove('light-mode');
+      }
+    });
+
+    // Ajuster la hauteur au redimensionnement
+    window.addEventListener('resize', adjustBoxHeight);
+  </script>
 </body>
 </html>
