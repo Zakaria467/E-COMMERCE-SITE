@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop - NexusStore</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shop.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
+  
+</head>
+<body class="dark-mode">
+  <!-- Dark Mode Toggle -->
+  <div style="width:100%;display:flex;justify-content:flex-end;align-items:center;padding:1.2rem 2rem 0 0;position:relative;z-index:100;">
+    <button id="darkModeToggle" class="mode-toggle-btn" aria-label="Changer le thème">
+      <span class="toggle-track"></span>
+      <span class="toggle-circle">
+        <svg class="shop-icon-light" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 6V5a6 6 0 1 1 12 0v1" stroke="#00ffff" stroke-width="2"/><rect x="3" y="6" width="18" height="15" rx="2" stroke="#00ffff" stroke-width="2"/><path d="M16 10a4 4 0 0 1-8 0" stroke="#ff00ff" stroke-width="2"/></svg>
+        <svg class="shop-icon-dark" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM3 3h2l.4 2m3.6 8h10l1-5H6.4L5 5H3" stroke="#FFD600" stroke-width="2" fill="none"/><path d="M6 16h12a1 1 0 0 0 1-1 3 3 0 0 0-3-3H8a3 3 0 0 0-3 3 1 1 0 0 0 1 1z" stroke="#FFD600" stroke-width="2" fill="none"/></svg>
+      </span>
+    </button>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="cyber-nav">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">NEXUS</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+              <button class="cart-btn me-3" aria-label="Shopping cart" onclick="window.location.href='cart.html'">
+                <div class="cart-icon-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="cart-icon">
+                    <path d="M7 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM3 3h2l.4 2m3.6 8h10l1-5H6.4L5 5H3"/>
+                    <path d="M6 16h12a1 1 0 0 0 1-1 3 3 0 0 0-3-3H8a3 3 0 0 0-3 3 1 1 0 0 0 1 1z"/>
+                  </svg>
+                  <span class="cart-counter" id="cartCounter">0</span>
+                </div>
+                <div class="cart-pulse"></div>
+              </button>
+              
+              <!-- Bouton Admin (visible seulement si admin) -->
+              <button class="auth-btn me-3" id="adminBtn" style="display:none;">
+                <span>Admin</span>
+                <div class="auth-underline"></div>
+              </button>
+              
+              <!-- Bouton Login -->
+              <button class="auth-btn" id="loginBtn">
+                <span>Login</span>
+                <div class="auth-underline"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Products Grid -->
+    <section class="cyber-section">
+      <div class="container">
+        <h2 class="cyber-section-title">SHOP <span>ALL PRODUCTS</span></h2>
+
+        <!-- Product Filters -->
+        <section class="cyber-filters py-4">
+          <div class="container">
+            <div class="row g-3">
+              <div class="col-md-3">
+                <select id="categoryFilter" class="cyber-select form-select">
+                  <option value="">All Categories</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="clothing">Clothing</option>
+                  <option value="accessories">Accessories</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <select id="priceFilter" class="cyber-select form-select">
+                  <option value="">Price Range</option>
+                  <option value="0-50">$0 - $50</option>
+                  <option value="50-100">$50 - $100</option>
+                  <option value="100-500">$100 - $500</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <select id="sortBy" class="cyber-select form-select">
+                  <option value="">Sort By</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="rating">Highest Rating</option>
+                  <option value="newest">Newest</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <input type="text" id="searchInput" class="cyber-input form-control" placeholder="Search products...">
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <div class="cyber-products-grid" id="shop-products">
+          <!-- Les produits seront chargés dynamiquement ici -->
+        </div>
+        
+        <!-- Pagination -->
+        <div class="cyber-pagination mt-5">
+          <button class="cyber-button-icon" id="prevPage"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <span id="pageIndicator">Page 1 of 1</span>
+          <button class="cyber-button-icon" id="nextPage"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Product Modal -->
+  <div class="product-modal" id="productModal">
+    <div class="modal-content">
+      <button class="close-modal" id="closeModal">&times;</button>
+      <div class="modal-image-container">
+        <img src="" alt="" class="modal-image" id="modalImage">
+      </div>
+      <div class="modal-details">
+        <span class="modal-badge" id="modalBadge"></span>
+        <h1 class="modal-title" id="modalTitle"></h1>
+        <div class="modal-rating" id="modalRating"></div>
+        <div class="modal-price" id="modalPrice"></div>
+        <div class="modal-description" id="modalDescription"></div>
+        
+        <div class="quantity-selector">
+          <label>Quantity:</label>
+          <div class="quantity-selector">
+            <button class="quantity-btn" id="decreaseQty">-</button>
+            <input type="number" min="1" value="1" class="quantity-input" id="modalQty">
+            <button class="quantity-btn" id="increaseQty">+</button>
+          </div>
+        </div>
+        
+        <div class="modal-actions">
+          <button class="cyber-button-primary" id="addToCartModal">Add to Cart</button>
+          <button class="cyber-button-icon" id="addToFavoritesModal" title="Add to favorites">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="cyber-footer py-5">
+    <div class="container">
+      <div class="footer-bottom text-center mt-5 pt-3">
+        <p>© 2025 NexusStore. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Product Template (caché) -->
+  <template id="product-template">
+    <div class="cyber-product-card">
+      <div class="product-badge" data-badge></div>
+      <div class="product-image-container">
+        <img src="" alt="" class="product-image img-fluid" data-image>
+      </div>
+      <h3 data-name></h3>
+      <div class="product-rating" data-rating></div>
+      <div class="product-footer flex items-center justify-between">
+        <span class="product-price" data-price></span>
+        <input type="number" min="1" value="1" class="cyber-input" style="width:60px;">
+      </div>
+      <div class="flex items-center justify-between" style="margin-top: 0.5rem;">
+        <button class="cyber-button-primary" data-add-to-cart>Ajouter au panier</button>
+        <button class="cyber-button-icon" data-add-to-favorites title="Ajouter aux favoris">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z"/></svg>
+        </button>
+      </div>
+    </div>
+  </template>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Gestion du thème sombre/clair
+    document.getElementById('darkModeToggle').addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      document.body.classList.toggle('light-mode');
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    });
+
+    // Vérifier le thème sauvegardé
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode');
+    }
+
+    // Redirection des boutons
+    document.getElementById('loginBtn').addEventListener('click', function() {
+      window.location.href = 'login1.html';
+    });
+
+    document.getElementById('adminBtn').addEventListener('click', function() {
+      window.location.href = 'admin.html';
+    });
+
+    // Vérifier si l'utilisateur est admin (exemple simplifié)
+    if (localStorage.getItem('isAdmin') === 'true') {
+      document.getElementById('adminBtn').style.display = 'inline-block';
+    }
+
+    // Gestion des produits
+    const products = JSON.parse(localStorage.getItem('nexusProducts')) || [
+      // Produits par défaut (peuvent être ajoutés via l'interface admin)
+      {
+        id: 1,
+        name: "Neon Vision Glasses",
+        price: 29.99,
+        image: "Heat-Wave-Unisex-Future-Tech-Z87-Neo-Safari-Atmosphere-Sunglasses-Kowear-02__38157.jpg",
+        rating: "★★★★☆ (128)",
+        badge: "NEW",
+        category: "accessories",
+        description: "These cutting-edge Neon Vision Glasses use advanced augmented reality technology to overlay digital information onto your field of view. Perfect for tech enthusiasts and professionals alike, they feature adjustable tint, blue light filtering, and a sleek cyberpunk design that stands out in any crowd."
+      },
+      {
+        id: 2,
+        name: "Quantum Mechanical Keyboard",
+        price: 18.99,
+        image: "freepik__the-style-is-candid-image-photography-with-natural__3415.jpeg",
+        rating: "★★★★★ (256)",
+        badge: "",
+        category: "electronics",
+        description: "Experience the ultimate typing experience with our Quantum Mechanical Keyboard. Featuring customizable RGB lighting, ultra-responsive switches, and a durable aluminum frame. The ergonomic design reduces wrist strain during long coding or gaming sessions, while the programmable macro keys give you complete control."
+      },
+      {
+        id: 3,
+        name: "Holographic Smart Watch",
+        price: 149.99,
+        image: "https://c3.iggcdn.com/indiegogo-media-prod-cld/image/upload/c_fill,g_auto,q_auto,f_auto,h_460,w_695/diuxyutj2z6cdcrztffw",
+        rating: "★★★★☆ (84)",
+        badge: "SALE",
+        category: "electronics",
+        description: "The future is on your wrist with our Holographic Smart Watch. This innovative device projects notifications, fitness stats, and even calls in mid-air using holographic technology. With a 7-day battery life, waterproof design, and compatibility with both iOS and Android, it's the perfect blend of style and functionality."
+      },
+      {
+        id: 4,
+        name: "Neon Cyber Jacket",
+        price: 199.99,
+        image: "jacket-noir.jpg",
+        rating: "★★★★★ (42)",
+        badge: "",
+        category: "clothing",
+        description: "Make a statement with our Neon Cyber Jacket, inspired by futuristic dystopian fashion. Made from high-tech water-resistant fabric with built-in LED lighting that can be customized via smartphone app. Features multiple pockets with RFID protection, adjustable fit, and a striking design that glows in low light conditions."
+      },
+      {
+        id: 5,
+        name: "Neural Sync Headset",
+        price: 249.99,
+        image: "https://img.freepik.com/free-photo/woman-experiencing-vr-simulation-entertainment-technology_53876-97908.jpg?semt=ais_hybrid&w=740",
+        rating: "★★★★★ (187)",
+        badge: "NEW",
+        category: "electronics",
+        description: "Immerse yourself in sound with our Neural Sync Headset. Using advanced brainwave synchronization technology, these headphones adapt to your mental state to deliver the perfect audio experience. Features active noise cancellation, 40mm drivers, and a comfortable over-ear design for extended listening sessions."
+      },
+      {
+        id: 6,
+        name: "Cyberpunk Utility Belt",
+        price: 49.99,
+        image: "https://img.freepik.com/premium-photo/game-item-armor-belt-item-cyberpunk-design-waistband-tech-armor-item-eillustration-collection-idea_1020495-296119.jpg",
+        rating: "★★★★☆ (56)",
+        badge: "",
+        category: "accessories",
+        description: "Stay prepared with our Cyberpunk Utility Belt. Designed for the modern urban explorer, it features multiple modular compartments for tech gear, water-resistant pouches, and a sleek reflective design. The quick-release buckle and adjustable fit make it perfect for everyday wear or special missions."
+      },
+{
+  id: 7,
+  name: "Augmented Reality Gloves",
+  price: 89.99,
+  image: "https://img.freepik.com/premium-photo/wearable-augmented-reality-gloves-black-with-fingertip-sensors-brightly-lit-against-white_1342292-10635.jpg",
+  rating: "★★★☆☆ (34)",
+  badge: "SALE",
+  category: "electronics",
+  description: "Control your digital world with a gesture using our Augmented Reality Gloves. These innovative gloves feature motion sensors and haptic feedback, allowing you to interact with AR/VR environments naturally. The breathable fabric and flexible design ensure comfort during extended use."
+},
+      {
+        id: 8,
+        name: "Photon Running Shoes",
+        price: 129.99,
+        image: "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?auto=format&fit=crop&w=400&q=80",
+        rating: "★★★★★ (92)",
+        badge: "",
+        category: "clothing",
+        description: "Experience the future of footwear with our Photon Running Shoes. Featuring self-adjusting cushioning, kinetic energy recharge, and LED lighting that changes color based on your speed. The aerodynamic design and lightweight materials make these perfect for both casual wear and performance running."
+      }
+    ];
+
+    // Variables pour la pagination et le modal
+    let currentPage = 1;
+    const productsPerPage = 8;
+    let filteredProducts = [...products];
+    let currentProduct = null;
+
+    // Éléments du modal
+    const productModal = document.getElementById('productModal');
+    const closeModal = document.getElementById('closeModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalRating = document.getElementById('modalRating');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalBadge = document.getElementById('modalBadge');
+    const modalQty = document.getElementById('modalQty');
+    const decreaseQty = document.getElementById('decreaseQty');
+    const increaseQty = document.getElementById('increaseQty');
+    const addToCartModal = document.getElementById('addToCartModal');
+    const addToFavoritesModal = document.getElementById('addToFavoritesModal');
+
+    // Afficher les produits
+    function displayProducts(productsToDisplay) {
+      const productsGrid = document.getElementById('shop-products');
+      productsGrid.innerHTML = '';
+      
+      const template = document.getElementById('product-template');
+      
+      productsToDisplay.forEach(product => {
+        const clone = template.content.cloneNode(true);
+        
+        // Remplir les données du produit
+        clone.querySelector('[data-name]').textContent = product.name;
+        clone.querySelector('[data-price]').textContent = `$${product.price.toFixed(2)}`;
+        clone.querySelector('[data-rating]').innerHTML = product.rating;
+        clone.querySelector('[data-image]').src = product.image;
+        clone.querySelector('[data-image]').alt = product.name;
+        
+        // Gérer le badge
+        const badgeElement = clone.querySelector('[data-badge]');
+        if (product.badge) {
+          badgeElement.textContent = product.badge;
+          badgeElement.style.display = 'block';
+          
+          // Appliquer des styles différents selon le type de badge
+          if (product.badge === "NEW") {
+            badgeElement.style.backgroundColor = "#00ffaa";
+            badgeElement.style.color = "#111";
+          } else if (product.badge === "SALE") {
+            badgeElement.style.backgroundColor = "#ff3366";
+            badgeElement.style.color = "#fff";
+          }
+        } else {
+          badgeElement.style.display = 'none';
+        }
+        
+        // Gestion des événements
+        clone.querySelector('[data-add-to-cart]').addEventListener('click', function() {
+          addToCart(product, this);
+        });
+        
+        clone.querySelector('[data-add-to-favorites]').addEventListener('click', function() {
+          addToFavorites(product, this);
+        });
+
+        // Ajouter l'événement pour ouvrir le modal
+        const productCard = clone.querySelector('.cyber-product-card');
+        productCard.addEventListener('click', function(e) {
+          // Ne pas ouvrir le modal si on clique sur un bouton
+          if (!e.target.closest('button') && !e.target.closest('input')) {
+            openProductModal(product);
+          }
+        });
+        
+        productsGrid.appendChild(clone);
+      });
+      
+      // Mettre à jour l'indicateur de page
+      updatePageIndicator();
+    }
+
+    // Ouvrir le modal produit
+    function openProductModal(product) {
+      currentProduct = product;
+      
+      // Remplir les données du modal
+      modalImage.src = product.image;
+      modalImage.alt = product.name;
+      modalTitle.textContent = product.name;
+      modalRating.innerHTML = product.rating;
+      modalPrice.textContent = `$${product.price.toFixed(2)}`;
+      modalDescription.textContent = product.description;
+      modalQty.value = 1;
+
+      // Gérer le badge
+      if (product.badge) {
+        modalBadge.textContent = product.badge;
+        modalBadge.style.display = 'inline-block';
+        
+        if (product.badge === "NEW") {
+          modalBadge.className = 'modal-badge badge-new';
+        } else if (product.badge === "SALE") {
+          modalBadge.className = 'modal-badge badge-sale';
+        }
+      } else {
+        modalBadge.style.display = 'none';
+      }
+
+      // Vérifier si le produit est dans les favoris
+      const favorites = JSON.parse(localStorage.getItem('nexusFavorites')) || [];
+      const isFavorite = favorites.some(fav => fav.id === product.id);
+      
+      if (isFavorite) {
+        addToFavoritesModal.classList.add('glow-effect');
+      } else {
+        addToFavoritesModal.classList.remove('glow-effect');
+      }
+
+      // Afficher le modal
+      productModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Fermer le modal
+    function closeProductModal() {
+      productModal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Ajouter au panier depuis le modal
+    function addToCartFromModal() {
+      const qty = parseInt(modalQty.value) || 1;
+      addToCart(currentProduct, addToCartModal, qty);
+    }
+
+    // Ajouter au panier
+    function addToCart(product, button, quantity = null) {
+      const qty = quantity || parseInt(button.closest('.cyber-product-card').querySelector('input[type="number"]').value) || 1;
+      
+      let cart = JSON.parse(localStorage.getItem('nexusCart')) || [];
+      
+      // Vérifier si le produit est déjà dans le panier
+      const existingItem = cart.find(item => item.id === product.id);
+      
+      if (existingItem) {
+        existingItem.quantity += qty;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: qty
+        });
+      }
+      
+      localStorage.setItem('nexusCart', JSON.stringify(cart));
+      updateCartCounter();
+      
+      // Animation de confirmation
+      if (button) {
+        button.textContent = '✓ Ajouté';
+        button.style.backgroundColor = '#00ffaa';
+        button.style.color = '#111';
+        
+        setTimeout(() => {
+          button.textContent = 'Ajouter au panier';
+          button.style.backgroundColor = '';
+          button.style.color = '';
+        }, 2000);
+      }
+    }
+
+    // Ajouter aux favoris
+    function addToFavorites(product, button) {
+      let favorites = JSON.parse(localStorage.getItem('nexusFavorites')) || [];
+      
+      const isFavorite = favorites.some(fav => fav.id === product.id);
+      
+      if (isFavorite) {
+        favorites = favorites.filter(fav => fav.id !== product.id);
+        button.classList.remove('glow-effect');
+        if (addToFavoritesModal) addToFavoritesModal.classList.remove('glow-effect');
+      } else {
+        favorites.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image
+        });
+        button.classList.add('glow-effect');
+        if (addToFavoritesModal) addToFavoritesModal.classList.add('glow-effect');
+      }
+      
+      localStorage.setItem('nexusFavorites', JSON.stringify(favorites));
+      
+      // Animation
+      const target = button || addToFavoritesModal;
+      gsap.to(target, {
+        scale: 1.2,
+        duration: 0.3,
+        yoyo: true,
+        repeat: 1
+      });
+    }
+
+    // Mettre à jour le compteur du panier
+    function updateCartCounter() {
+      const cart = JSON.parse(localStorage.getItem('nexusCart')) || [];
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+      document.getElementById('cartCounter').textContent = totalItems;
+    }
+
+    // Filtrer les produits
+    function filterProducts() {
+      const category = document.getElementById('categoryFilter').value;
+      const priceRange = document.getElementById('priceFilter').value;
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const sortBy = document.getElementById('sortBy').value;
+      
+      filteredProducts = products.filter(product => {
+        // Filtre par catégorie
+        if (category && product.category !== category) return false;
+        
+        // Filtre par prix
+        if (priceRange) {
+          const [min, max] = priceRange.split('-').map(Number);
+          if (product.price < min || product.price > max) return false;
+        }
+        
+        // Filtre par recherche
+        if (searchTerm && !product.name.toLowerCase().includes(searchTerm)) return false;
+        
+        return true;
+      });
+      
+      // Trier les produits
+      switch(sortBy) {
+        case 'price-asc':
+          filteredProducts.sort((a, b) => a.price - b.price);
+          break;
+        case 'price-desc':
+          filteredProducts.sort((a, b) => b.price - a.price);
+          break;
+        case 'rating':
+          // Simplification - en réalité il faudrait extraire la valeur numérique de la note
+          filteredProducts.sort((a, b) => b.rating.localeCompare(a.rating));
+          break;
+        case 'newest':
+          // Supposons que les produits plus récents ont des ID plus élevés
+          filteredProducts.sort((a, b) => b.id - a.id);
+          break;
+        default:
+          // Pas de tri ou tri par défaut
+          break;
+      }
+      
+      currentPage = 1;
+      displayPaginatedProducts();
+    }
+
+    // Pagination
+    function displayPaginatedProducts() {
+      const startIndex = (currentPage - 1) * productsPerPage;
+      const endIndex = startIndex + productsPerPage;
+      const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+      
+      displayProducts(paginatedProducts);
+    }
+
+    function updatePageIndicator() {
+      const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+      document.getElementById('pageIndicator').textContent = `Page ${currentPage} of ${totalPages}`;
+      
+      // Désactiver les boutons si nécessaire
+      document.getElementById('prevPage').disabled = currentPage === 1;
+      document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
+    }
+
+    // Gestion des événements
+    function setupEventListeners() {
+      // Filtres et recherche
+      document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+      document.getElementById('priceFilter').addEventListener('change', filterProducts);
+      document.getElementById('sortBy').addEventListener('change', filterProducts);
+      document.getElementById('searchInput').addEventListener('input', filterProducts);
+      
+      // Pagination
+      document.getElementById('prevPage').addEventListener('click', function() {
+        if (currentPage > 1) {
+          currentPage--;
+          displayPaginatedProducts();
+        }
+      });
+      
+      document.getElementById('nextPage').addEventListener('click', function() {
+        const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          displayPaginatedProducts();
+        }
+      });
+
+      // Modal
+      closeModal.addEventListener('click', closeProductModal);
+      productModal.addEventListener('click', function(e) {
+        if (e.target === productModal) {
+          closeProductModal();
+        }
+      });
+
+      // Gestion de la quantité dans le modal
+      decreaseQty.addEventListener('click', function() {
+        if (modalQty.value > 1) {
+          modalQty.value--;
+        }
+      });
+
+      increaseQty.addEventListener('click', function() {
+        modalQty.value++;
+      });
+
+      // Boutons du modal
+      addToCartModal.addEventListener('click', addToCartFromModal);
+      addToFavoritesModal.addEventListener('click', function() {
+        addToFavorites(currentProduct);
+      });
+
+      // Fermer le modal avec la touche ESC
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && productModal.classList.contains('active')) {
+          closeProductModal();
+        }
+      });
+    }
+
+    // Initialisation
+    function init() {
+      setupEventListeners();
+      updateCartCounter();
+      filterProducts();
+    }
+
+    // Démarrer l'application
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

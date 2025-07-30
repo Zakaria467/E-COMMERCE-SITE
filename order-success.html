@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Success - NexusStore</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shop.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00ffff;
+      --secondary: #ff00ff;
+      --dark-bg: #0a0a12;
+      --darker-bg: #050508;
+      --light-bg: #f8f9fa;
+      --lighter-bg: #ffffff;
+      --text-dark: #e0e0e0;
+      --text-light: #333333;
+      --accent-yellow: #FFD600;
+      --accent-pink: #ff3366;
+      --accent-green: #00ffaa;
+    }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      margin: 0;
+      padding: 0;
+      transition: all 0.3s ease;
+    }
+
+    body.dark-mode {
+      background-color: var(--dark-bg);
+      color: var(--text-dark);
+    }
+
+    body.light-mode {
+      background-color: var(--light-bg);
+      color: var(--text-light);
+    }
+
+    /* Style pour le bouton Login */
+    .auth-btn {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      z-index: 1001;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    .auth-btn:hover {
+      color: var(--neon-pink);
+      text-shadow: 0 0 8px var(--neon-pink);
+    }
+
+    .auth-underline {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .auth-btn:hover .auth-underline {
+      width: 100%;
+    }
+
+    .auth-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 255, 255, 0.1),
+        transparent
+      );
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .auth-btn:hover::before {
+      left: 100%;
+    }
+
+    /* Mode clair */
+    .light-mode .auth-btn {
+      color: var(--neon-purple);
+    }
+
+    .light-mode .auth-btn:hover {
+      color: var(--neon-pink);
+    }
+
+    .light-mode .auth-underline {
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+    }
+
+    /* Positionnement responsive */
+    @media (max-width: 992px) {
+      .auth-btn {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-left: auto;
+        padding: 0.5rem 0;
+      }
+      
+      .auth-btn::before {
+        display: none;
+      }
+    }
+
+    .success-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .success-icon {
+      font-size: 6rem;
+      color: var(--accent-green);
+      margin-bottom: 1.5rem;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .success-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--accent-green), var(--primary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .success-message {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .delivery-info {
+      background: var(--darker-bg);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      border: 1px solid rgba(0, 255, 255, 0.1);
+      text-align: left;
+    }
+
+    .light-mode .delivery-info {
+      background: var(--lighter-bg);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .info-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    }
+
+    .order-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .detail-group {
+      margin-bottom: 1rem;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+
+    .detail-value {
+      font-size: 1.1rem;
+    }
+
+    .order-summary {
+      background: var(--darker-bg);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      border: 1px solid rgba(0, 255, 255, 0.1);
+      text-align: left;
+    }
+
+    .light-mode .order-summary {
+      background: var(--lighter-bg);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .order-items {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .order-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+    }
+
+    .order-item-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-right: 1rem;
+    }
+
+    .order-item-details {
+      flex: 1;
+    }
+
+    .order-item-name {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .order-item-price {
+      color: var(--secondary);
+    }
+
+    .order-totals {
+      border-top: 1px solid rgba(0, 255, 255, 0.2);
+      padding-top: 1rem;
+    }
+
+    .order-total-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .order-total {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: var(--darker-bg);
+      border: none;
+      border-radius: 5px;
+      padding: 0.8rem 2rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 0.8rem 2rem;
+      border-radius: 5px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 255, 255, 0.1);
+    }
+
+    .tracking-number {
+      background: rgba(0, 255, 255, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-family: 'Orbitron', sans-serif;
+      margin: 1rem 0;
+      display: inline-block;
+      border: 1px dashed var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .order-details {
+        grid-template-columns: 1fr;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .btn-primary, .btn-secondary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <!-- Dark Mode Toggle -->
+  <div style="width:100%;display:flex;justify-content:flex-end;align-items:center;padding:1.2rem 2rem 0 0;position:relative;z-index:100;">
+    <button id="darkModeToggle" class="mode-toggle-btn" aria-label="Changer le thème">
+      <span class="toggle-track"></span>
+      <span class="toggle-circle">
+        <svg class="shop-icon-light" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 6V5a6 6 0 1 1 12 0v1" stroke="#00ffff" stroke-width="2"/><rect x="3" y="6" width="18" height="15" rx="2" stroke="#00ffff" stroke-width="2"/><path d="M16 10a4 4 0 0 1-8 0" stroke="#ff00ff" stroke-width="2"/></svg>
+        <svg class="shop-icon-dark" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM3 3h2l.4 2m3.6 8h10l1-5H6.4L5 5H3" stroke="#FFD600" stroke-width="2" fill="none"/><path d="M6 16h12a1 1 0 0 0 1-1 3 3 0 0 0-3-3H8a3 3 0 0 0-3 3 1 1 0 0 0 1 1z" stroke="#FFD600" stroke-width="2" fill="none"/></svg>
+      </span>
+    </button>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="cyber-nav">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">NEXUS</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="d-flex align-items-center ms-lg-3">
+              <!-- Bouton Login -->
+              <button class="auth-btn" id="loginBtn">
+                <span>Login</span>
+                <div class="auth-underline"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="success-container">
+      <div class="success-icon">✓</div>
+      <h1 class="success-title">ORDER CONFIRMED!</h1>
+      <p class="success-message">
+        Thank you for your purchase! Your order has been successfully placed and is being processed.
+        <br>You will receive a confirmation email shortly with all the details.
+      </p>
+      
+      <div class="tracking-number">
+        Tracking Number: <strong id="trackingNumber">NS-<span id="trackingDigits">00000000</span></strong>
+      </div>
+      
+      <div class="delivery-info">
+        <h3 class="info-title">Estimated Delivery</h3>
+        <p>Your order will be delivered within <strong id="deliveryDays">5-7 business days</strong>.</p>
+        <p>We'll notify you at each step of the delivery process.</p>
+      </div>
+      
+      <div class="order-details">
+        <div>
+          <h3 class="info-title">Shipping Information</h3>
+          <div class="detail-group">
+            <span class="detail-label">Name</span>
+            <span class="detail-value" id="customerName"></span>
+          </div>
+          <div class="detail-group">
+            <span class="detail-label">Address</span>
+            <span class="detail-value" id="customerAddress"></span>
+          </div>
+          <div class="detail-group">
+            <span class="detail-label">Email</span>
+            <span class="detail-value" id="customerEmail"></span>
+          </div>
+          <div class="detail-group">
+            <span class="detail-label">Phone</span>
+            <span class="detail-value" id="customerPhone"></span>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="info-title">Payment Information</h3>
+          <div class="detail-group">
+            <span class="detail-label">Payment Method</span>
+            <span class="detail-value" id="paymentMethod"></span>
+          </div>
+          <div class="detail-group">
+            <span class="detail-label">Order Date</span>
+            <span class="detail-value" id="orderDate"></span>
+          </div>
+          <div class="detail-group">
+            <span class="detail-label">Order Status</span>
+            <span class="detail-value" id="orderStatus">Processing</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="order-summary">
+        <h3 class="info-title">Order Summary</h3>
+        <div class="order-items" id="orderItems">
+          <!-- Les articles seront chargés dynamiquement ici -->
+        </div>
+        <div class="order-totals">
+          <div class="order-total-row">
+            <span>Subtotal</span>
+            <span id="orderSubtotal">$0.00</span>
+          </div>
+          <div class="order-total-row">
+            <span>Shipping</span>
+            <span>Free</span>
+          </div>
+          <div class="order-total-row order-total">
+            <span>Total</span>
+            <span id="orderTotal">$0.00</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn-primary" onclick="window.location.href='index.html'">CONTINUE SHOPPING</button>
+        <button class="btn-secondary" onclick="window.location.href='track-order.html'">TRACK ORDER</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="cyber-footer py-5">
+    <div class="container">
+      <div class="footer-bottom text-center mt-5 pt-3">
+        <p>© 2025 NexusStore. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Templates -->
+  <template id="order-item-template">
+    <div class="order-item">
+      <img src="" alt="" class="order-item-image" data-image>
+      <div class="order-item-details">
+        <div class="order-item-name" data-name></div>
+        <div class="order-item-price" data-price></div>
+        <div>Quantity: <span data-quantity></span></div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Gestion du thème sombre/clair
+    document.getElementById('darkModeToggle').addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      document.body.classList.toggle('light-mode');
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    });
+
+    // Vérifier le thème sauvegardé
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode');
+    }
+
+    // Redirection du bouton Login
+    document.getElementById('loginBtn').addEventListener('click', function() {
+      window.location.href = 'login1.html';
+    });
+
+    // Charger les détails de la commande
+    function loadOrderDetails() {
+      const order = JSON.parse(localStorage.getItem('currentOrder'));
+      
+      if (!order) {
+        alert('No order found! Redirecting to shop...');
+        window.location.href = 'shop.html';
+        return;
+      }
+      
+      // Afficher les informations client
+      document.getElementById('customerName').textContent = `${order.customer.firstName} ${order.customer.lastName}`;
+      document.getElementById('customerAddress').textContent = `${order.customer.address}, ${order.customer.city}, ${order.customer.postalCode}, ${order.customer.country}`;
+      document.getElementById('customerEmail').textContent = order.customer.email;
+      document.getElementById('customerPhone').textContent = order.customer.phone;
+      
+      // Afficher les informations de paiement
+      document.getElementById('paymentMethod').textContent = order.paymentMethod === 'cash' ? 'Cash on Delivery' : order.paymentMethod;
+      
+      const orderDate = new Date(order.date);
+      document.getElementById('orderDate').textContent = orderDate.toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      // Générer un numéro de suivi aléatoire
+      const trackingDigits = Math.floor(10000000 + Math.random() * 90000000);
+      document.getElementById('trackingDigits').textContent = trackingDigits;
+      
+      // Calculer une estimation de livraison basée sur le pays
+      const deliveryEstimate = calculateDeliveryEstimate(order.customer.country);
+      document.getElementById('deliveryDays').textContent = deliveryEstimate;
+      
+      // Charger les articles de la commande
+      const orderItemsContainer = document.getElementById('orderItems');
+      const template = document.getElementById('order-item-template');
+      
+      let subtotal = 0;
+      
+      order.items.forEach(item => {
+        const clone = template.content.cloneNode(true);
+        
+        clone.querySelector('[data-image]').src = item.image;
+        clone.querySelector('[data-image]').alt = item.name;
+        clone.querySelector('[data-name]').textContent = item.name;
+        clone.querySelector('[data-price]').textContent = `$${(item.price * item.quantity).toFixed(2)}`;
+        clone.querySelector('[data-quantity]').textContent = item.quantity;
+        
+        subtotal += item.price * item.quantity;
+        
+        orderItemsContainer.appendChild(clone);
+      });
+      
+      document.getElementById('orderSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('orderTotal').textContent = `$${subtotal.toFixed(2)}`;
+      
+      // Vider le panier après confirmation
+      localStorage.removeItem('pendingOrder');
+    }
+    
+    // Calculer l'estimation de livraison en fonction du pays
+    function calculateDeliveryEstimate(countryCode) {
+      // Groupes de pays par région/proximité
+      const northAfrica = ['DZ', 'EG', 'LY', 'MA', 'TN'];
+      const westAfrica = ['BJ', 'BF', 'CV', 'CI', 'GM', 'GH', 'GN', 'GW', 'LR', 'ML', 'MR', 'NE', 'NG', 'SN', 'SL', 'TG'];
+      const eastAfrica = ['BI', 'KM', 'DJ', 'ER', 'ET', 'KE', 'MG', 'MU', 'RW', 'SC', 'SO', 'SS', 'SD', 'TZ', 'UG'];
+      const centralAfrica = ['AO', 'CM', 'CF', 'TD', 'CG', 'CD', 'GQ', 'GA', 'ST'];
+      const southernAfrica = ['BW', 'LS', 'MW', 'MZ', 'NA', 'ZA', 'SZ', 'ZM', 'ZW'];
+      
+      if (northAfrica.includes(countryCode)) {
+        return '3-5 business days';
+      } else if (westAfrica.includes(countryCode)) {
+        return '5-7 business days';
+      } else if (eastAfrica.includes(countryCode)) {
+        return '7-10 business days';
+      } else if (centralAfrica.includes(countryCode)) {
+        return '8-12 business days';
+      } else if (southernAfrica.includes(countryCode)) {
+        return '4-6 business days';
+      } else {
+        return '7-14 business days'; // Estimation par défaut
+      }
+    }
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', function() {
+      loadOrderDetails();
+    });
+  </script>
+</body>
+</html>

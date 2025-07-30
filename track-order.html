@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Your Order - NexusStore</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="shop.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00ffff;
+      --secondary: #ff00ff;
+      --dark-bg: #0a0a12;
+      --darker-bg: #050508;
+      --light-bg: #f8f9fa;
+      --lighter-bg: #ffffff;
+      --text-dark: #e0e0e0;
+      --text-light: #333333;
+      --accent-yellow: #FFD600;
+      --accent-pink: #ff3366;
+      --accent-green: #00ffaa;
+    }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      margin: 0;
+      padding: 0;
+      transition: all 0.3s ease;
+    }
+
+    body.dark-mode {
+      background-color: var(--dark-bg);
+      color: var(--text-dark);
+    }
+
+    body.light-mode {
+      background-color: var(--light-bg);
+      color: var(--text-light);
+    }
+
+    /* Style pour le bouton Login */
+    .auth-btn {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      z-index: 1001;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    .auth-btn:hover {
+      color: var(--neon-pink);
+      text-shadow: 0 0 8px var(--neon-pink);
+    }
+
+    .auth-underline {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .auth-btn:hover .auth-underline {
+      width: 100%;
+    }
+
+    .auth-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 255, 255, 0.1),
+        transparent
+      );
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .auth-btn:hover::before {
+      left: 100%;
+    }
+
+    /* Mode clair */
+    .light-mode .auth-btn {
+      color: var(--neon-purple);
+    }
+
+    .light-mode .auth-btn:hover {
+      color: var(--neon-pink);
+    }
+
+    .light-mode .auth-underline {
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+    }
+
+    /* Positionnement responsive */
+    @media (max-width: 992px) {
+      .auth-btn {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-left: auto;
+        padding: 0.5rem 0;
+      }
+      
+      .auth-btn::before {
+        display: none;
+      }
+    }
+
+    .tracking-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .tracking-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .track-search {
+      background: var(--darker-bg);
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(0, 255, 255, 0.1);
+      text-align: center;
+    }
+
+    .light-mode .track-search {
+      background: var(--lighter-bg);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .search-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .search-input {
+      display: flex;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .track-input {
+      flex: 1;
+      padding: 0.8rem 1rem;
+      border-radius: 5px 0 0 5px;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      background: rgba(0, 255, 255, 0.05);
+      color: var(--text-dark);
+      font-family: 'Rajdhani', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .light-mode .track-input {
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      color: var(--text-light);
+    }
+
+    .track-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.2);
+    }
+
+    .track-btn {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: var(--darker-bg);
+      border: none;
+      border-radius: 0 5px 5px 0;
+      padding: 0 1.5rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .track-btn:hover {
+      opacity: 0.9;
+    }
+
+    .order-status {
+      background: var(--darker-bg);
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(0, 255, 255, 0.1);
+    }
+
+    .light-mode .order-status {
+      background: var(--lighter-bg);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .order-number {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+
+    .order-date {
+      color: var(--secondary);
+    }
+
+    .status-timeline {
+      position: relative;
+      padding: 2rem 0;
+      margin: 0 auto;
+      max-width: 800px;
+    }
+
+    .status-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50px;
+      width: 2px;
+      background: rgba(0, 255, 255, 0.3);
+      transform: translateX(-50%);
+    }
+
+    .status-progress {
+      position: absolute;
+      top: 0;
+      left: 50px;
+      height: 0;
+      width: 2px;
+      background: var(--accent-green);
+      transform: translateX(-50%);
+      transition: height 1s ease;
+    }
+
+    .status-items {
+      position: relative;
+      z-index: 1;
+    }
+
+    .status-item {
+      display: flex;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .status-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--darker-bg);
+      border: 2px solid rgba(0, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .status-item.active .status-icon {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      color: var(--dark-bg);
+    }
+
+    .status-item.completed .status-icon {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      color: var(--dark-bg);
+    }
+
+    .status-content {
+      flex: 1;
+    }
+
+    .status-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+
+    .status-item.completed .status-title,
+    .status-item.active .status-title {
+      color: var(--accent-green);
+    }
+
+    .status-desc {
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .light-mode .status-desc {
+      color: var(--text-light);
+    }
+
+    .status-date {
+      font-size: 0.9rem;
+      color: var(--secondary);
+    }
+
+    .order-details {
+      background: var(--darker-bg);
+      border-radius: 10px;
+      padding: 2rem;
+      border: 1px solid rgba(0, 255, 255, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    .light-mode .order-details {
+      background: var(--lighter-bg);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .details-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .detail-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .detail-value {
+      font-size: 1.1rem;
+    }
+
+    .shipping-map {
+      height: 300px;
+      background: var(--darker-bg);
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(0, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .light-mode .shipping-map {
+      background: var(--lighter-bg);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .map-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: var(--primary);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .map-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: var(--darker-bg);
+      border: none;
+      border-radius: 5px;
+      padding: 0.8rem 2rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 0.8rem 2rem;
+      border-radius: 5px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 255, 255, 0.1);
+    }
+
+    .not-found {
+      text-align: center;
+      padding: 2rem;
+      display: none;
+    }
+
+    .not-found-icon {
+      font-size: 4rem;
+      color: var(--accent-pink);
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .search-input {
+        flex-direction: column;
+      }
+      
+      .track-input {
+        border-radius: 5px;
+        margin-bottom: 1rem;
+      }
+      
+      .track-btn {
+        border-radius: 5px;
+        padding: 0.8rem;
+      }
+      
+      .status-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .order-date {
+        margin-top: 0.5rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .btn-primary, .btn-secondary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <!-- Dark Mode Toggle -->
+  <div style="width:100%;display:flex;justify-content:flex-end;align-items:center;padding:1.2rem 2rem 0 0;position:relative;z-index:100;">
+    <button id="darkModeToggle" class="mode-toggle-btn" aria-label="Changer le thème">
+      <span class="toggle-track"></span>
+      <span class="toggle-circle">
+        <svg class="shop-icon-light" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 6V5a6 6 0 1 1 12 0v1" stroke="#00ffff" stroke-width="2"/><rect x="3" y="6" width="18" height="15" rx="2" stroke="#00ffff" stroke-width="2"/><path d="M16 10a4 4 0 0 1-8 0" stroke="#ff00ff" stroke-width="2"/></svg>
+        <svg class="shop-icon-dark" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM3 3h2l.4 2m3.6 8h10l1-5H6.4L5 5H3" stroke="#FFD600" stroke-width="2" fill="none"/><path d="M6 16h12a1 1 0 0 0 1-1 3 3 0 0 0-3-3H8a3 3 0 0 0-3 3 1 1 0 0 0 1 1z" stroke="#FFD600" stroke-width="2" fill="none"/></svg>
+      </span>
+    </button>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="cyber-nav">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">NEXUS</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="d-flex align-items-center ms-lg-3">
+              <!-- Bouton Login -->
+              <button class="auth-btn" id="loginBtn">
+                <span>Login</span>
+                <div class="auth-underline"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="tracking-container">
+      <h1 class="tracking-title">TRACK YOUR ORDER</h1>
+      
+      <div class="track-search">
+        <h3 class="search-title">Enter Your Tracking Number</h3>
+        <div class="search-input">
+          <input type="text" class="track-input" id="trackingInput" placeholder="NS-00000000" value="">
+          <button class="track-btn" id="trackBtn">TRACK</button>
+        </div>
+      </div>
+      
+      <div class="not-found" id="notFound">
+        <div class="not-found-icon">✕</div>
+        <h3>Order Not Found</h3>
+        <p>We couldn't find an order with that tracking number. Please check the number and try again.</p>
+      </div>
+      
+      <div class="order-status" id="orderStatus">
+        <div class="status-header">
+          <div class="order-number">Order: <span id="displayTrackingNumber">NS-00000000</span></div>
+          <div class="order-date">Placed on: <span id="orderDate">January 1, 2025</span></div>
+        </div>
+        
+        <div class="status-timeline">
+          <div class="status-line"></div>
+          <div class="status-progress" id="statusProgress"></div>
+          
+          <div class="status-items">
+            <div class="status-item completed" id="status1">
+              <div class="status-icon">✓</div>
+              <div class="status-content">
+                <h4 class="status-title">Order Confirmed</h4>
+                <p class="status-desc">Your order has been received and confirmed.</p>
+                <div class="status-date">Jan 1, 2025 - 10:30 AM</div>
+              </div>
+            </div>
+            
+            <div class="status-item completed" id="status2">
+              <div class="status-icon">✓</div>
+              <div class="status-content">
+                <h4 class="status-title">Processing</h4>
+                <p class="status-desc">Your order is being prepared for shipment.</p>
+                <div class="status-date">Jan 1, 2025 - 11:45 AM</div>
+              </div>
+            </div>
+            
+            <div class="status-item active" id="status3">
+              <div class="status-icon">🛒</div>
+              <div class="status-content">
+                <h4 class="status-title">Shipped</h4>
+                <p class="status-desc">Your order has left our warehouse.</p>
+                <div class="status-date">Jan 2, 2025 - 9:15 AM</div>
+              </div>
+            </div>
+            
+            <div class="status-item" id="status4">
+              <div class="status-icon">🚚</div>
+              <div class="status-content">
+                <h4 class="status-title">In Transit</h4>
+                <p class="status-desc">Your order is on its way to you.</p>
+                <div class="status-date">Estimated: Jan 4, 2025</div>
+              </div>
+            </div>
+            
+            <div class="status-item" id="status5">
+              <div class="status-icon">🏠</div>
+              <div class="status-content">
+                <h4 class="status-title">Delivered</h4>
+                <p class="status-desc">Your order has been delivered.</p>
+                <div class="status-date">Estimated: Jan 5-7, 2025</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="order-details">
+        <h3 class="details-title">Order Details</h3>
+        <div class="details-grid">
+          <div>
+            <div class="detail-group">
+              <span class="detail-label">Shipping Address</span>
+              <span class="detail-value" id="shippingAddress">Loading...</span>
+            </div>
+            <div class="detail-group">
+              <span class="detail-label">Contact</span>
+              <span class="detail-value" id="contactInfo">Loading...</span>
+            </div>
+          </div>
+          <div>
+            <div class="detail-group">
+              <span class="detail-label">Payment Method</span>
+              <span class="detail-value" id="paymentMethod">Loading...</span>
+            </div>
+            <div class="detail-group">
+              <span class="detail-label">Order Total</span>
+              <span class="detail-value" id="orderTotal">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="shipping-map">
+        <div class="map-placeholder">
+          <div class="map-icon">🌍</div>
+          <div>Shipping Route Visualization</div>
+          <small>Active tracking will display here</small>
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn-primary" onclick="window.location.href='index.html'">CONTINUE SHOPPING</button>
+        <button class="btn-secondary" onclick="window.print()">PRINT RECEIPT</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="cyber-footer py-5">
+    <div class="container">
+      <div class="footer-bottom text-center mt-5 pt-3">
+        <p>© 2025 NexusStore. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Gestion du thème sombre/clair
+    document.getElementById('darkModeToggle').addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      document.body.classList.toggle('light-mode');
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    });
+
+    // Vérifier le thème sauvegardé
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode');
+    }
+
+    // Redirection du bouton Login
+    document.getElementById('loginBtn').addEventListener('click', function() {
+      window.location.href = 'login1.html';
+    });
+
+    // Simuler le suivi de commande
+    function trackOrder(trackingNumber) {
+      const order = JSON.parse(localStorage.getItem('currentOrder'));
+      const notFound = document.getElementById('notFound');
+      const orderStatus = document.getElementById('orderStatus');
+      
+      // Vérifier si le numéro de suivi correspond
+      if (!order || !trackingNumber.includes(order.date.getTime().toString().substr(-8))) {
+        notFound.style.display = 'block';
+        orderStatus.style.display = 'none';
+        return;
+      }
+      
+      notFound.style.display = 'none';
+      orderStatus.style.display = 'block';
+      
+      // Afficher les informations de la commande
+      document.getElementById('displayTrackingNumber').textContent = `NS-${order.date.getTime().toString().substr(-8)}`;
+      
+      const orderDate = new Date(order.date);
+      document.getElementById('orderDate').textContent = orderDate.toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      
+      // Afficher les détails de la commande
+      document.getElementById('shippingAddress').textContent = 
+        `${order.customer.address}, ${order.customer.city}, ${order.customer.postalCode}, ${order.customer.country}`;
+      
+      document.getElementById('contactInfo').textContent = 
+        `${order.customer.email} | ${order.customer.phone}`;
+      
+      document.getElementById('paymentMethod').textContent = 
+        order.paymentMethod === 'cash' ? 'Cash on Delivery' : order.paymentMethod;
+      
+      // Calculer le total de la commande
+      let total = 0;
+      order.items.forEach(item => {
+        total += item.price * item.quantity;
+      });
+      
+      document.getElementById('orderTotal').textContent = `$${total.toFixed(2)}`;
+      
+      // Simuler la progression de la livraison
+      simulateDeliveryProgress(order.date);
+    }
+    
+    // Simuler la progression de la livraison
+    function simulateDeliveryProgress(orderDate) {
+      const now = new Date();
+      const orderTime = new Date(orderDate);
+      const diffTime = now - orderTime;
+      const diffDays = diffTime / (1000 * 60 * 60 * 24);
+      
+      // Définir les étapes en fonction du temps écoulé
+      const status1 = document.getElementById('status1');
+      const status2 = document.getElementById('status2');
+      const status3 = document.getElementById('status3');
+      const status4 = document.getElementById('status4');
+      const status5 = document.getElementById('status5');
+      const progressBar = document.getElementById('statusProgress');
+      
+      // Réinitialiser toutes les étapes
+      [status1, status2, status3, status4, status5].forEach(status => {
+        status.className = 'status-item';
+        status.querySelector('.status-icon').textContent = '✓';
+      });
+      
+      // Toujours marquer la première étape comme complète
+      status1.classList.add('completed');
+      
+      if (diffDays > 0.5) { // Après 12 heures
+        status2.classList.add('completed');
+      }
+      
+      if (diffDays > 1) { // Après 1 jour
+        status3.classList.add('active');
+        status3.querySelector('.status-icon').textContent = '🚚';
+      }
+      
+      if (diffDays > 2) { // Après 2 jours
+        status3.classList.remove('active');
+        status3.classList.add('completed');
+        status4.classList.add('active');
+        status4.querySelector('.status-icon').textContent = '✈️';
+      }
+      
+      if (diffDays > 4) { // Après 4 jours
+        status4.classList.remove('active');
+        status4.classList.add('completed');
+        status5.classList.add('active');
+        status5.querySelector('.status-icon').textContent = '🏠';
+      }
+      
+      if (diffDays > 5) { // Après 5 jours
+        status5.classList.remove('active');
+        status5.classList.add('completed');
+      }
+      
+      // Mettre à jour la barre de progression
+      let progressHeight = 0;
+      if (diffDays < 0.5) {
+        progressHeight = 10;
+      } else if (diffDays < 1) {
+        progressHeight = 30;
+      } else if (diffDays < 2) {
+        progressHeight = 50;
+      } else if (diffDays < 4) {
+        progressHeight = 75;
+      } else {
+        progressHeight = 100;
+      }
+      
+      progressBar.style.height = `${progressHeight}%`;
+      
+      // Mettre à jour les dates estimées
+      if (diffDays < 2) {
+        const estDate = new Date(orderTime);
+        estDate.setDate(estDate.getDate() + 4);
+        document.querySelector('#status4 .status-date').textContent = `Estimated: ${estDate.toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' })}`;
+        
+        estDate.setDate(estDate.getDate() + 3);
+        document.querySelector('#status5 .status-date').textContent = `Estimated: ${estDate.toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' })}`;
+      }
+    }
+    
+    // Gestion du clic sur le bouton de suivi
+    document.getElementById('trackBtn').addEventListener('click', function() {
+      const trackingNumber = document.getElementById('trackingInput').value.trim();
+      if (trackingNumber) {
+        trackOrder(trackingNumber);
+      }
+    });
+    
+    // Remplir automatiquement le champ de suivi si une commande existe
+    document.addEventListener('DOMContentLoaded', function() {
+      const order = JSON.parse(localStorage.getItem('currentOrder'));
+      if (order) {
+        const trackingNumber = `NS-${new Date(order.date).getTime().toString().substr(-8)}`;
+        document.getElementById('trackingInput').value = trackingNumber;
+        trackOrder(trackingNumber);
+      }
+    });
+  </script>
+</body>
+</html>
