@@ -174,7 +174,7 @@
         <input type="number" min="1" value="1" class="cyber-input" style="width:60px;">
       </div>
       <div class="flex items-center justify-between" style="margin-top: 0.5rem;">
-        <button class="cyber-button-primary" data-add-to-cart>Ajouter au panier</button>
+        <button class="cyber-button-primary" data-add-to-cart>Add to Cart</button>
         <button class="cyber-button-icon" data-add-to-favorites title="Ajouter aux favoris">
           <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z"/></svg>
         </button>
@@ -437,7 +437,7 @@
     function addToCart(product, button, quantity = null) {
       const qty = quantity || parseInt(button.closest('.cyber-product-card').querySelector('input[type="number"]').value) || 1;
       
-      let cart = JSON.parse(localStorage.getItem('nexusCart')) || [];
+      let cart = JSON.parse(localStorage.getItem('Cart')) || [];
       
       // Vérifier si le produit est déjà dans le panier
       const existingItem = cart.find(item => item.id === product.id);
@@ -454,17 +454,17 @@
         });
       }
       
-      localStorage.setItem('nexusCart', JSON.stringify(cart));
+      localStorage.setItem('Cart', JSON.stringify(cart));
       updateCartCounter();
       
       // Animation de confirmation
       if (button) {
-        button.textContent = '✓ Ajouté';
+        button.textContent = '✓ Added';
         button.style.backgroundColor = '#00ffaa';
         button.style.color = '#111';
         
         setTimeout(() => {
-          button.textContent = 'Ajouter au panier';
+          button.textContent = 'Add to Cart';
           button.style.backgroundColor = '';
           button.style.color = '';
         }, 2000);
@@ -506,7 +506,7 @@
 
     // Mettre à jour le compteur du panier
     function updateCartCounter() {
-      const cart = JSON.parse(localStorage.getItem('nexusCart')) || [];
+      const cart = JSON.parse(localStorage.getItem('Cart')) || [];
       const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
       document.getElementById('cartCounter').textContent = totalItems;
     }

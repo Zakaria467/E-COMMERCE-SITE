@@ -341,8 +341,8 @@
     }
 
     .auth-btn:hover {
-      color: var(--neon-pink);
-      text-shadow: 0 0 8px var(--neon-pink);
+      color: var(--accent-pink);
+      text-shadow: 0 0 8px var(--accent-pink);
     }
 
     .auth-underline {
@@ -351,7 +351,7 @@
       left: 0;
       width: 0;
       height: 2px;
-      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      background: linear-gradient(90deg, var(--primary), var(--accent-pink));
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
@@ -382,15 +382,15 @@
 
     /* Mode clair */
     .light-mode .auth-btn {
-      color: var(--neon-purple);
+      color: var(--secondary);
     }
 
     .light-mode .auth-btn:hover {
-      color: var(--neon-pink);
+      color: var(--accent-pink);
     }
 
     .light-mode .auth-underline {
-      background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+      background: linear-gradient(90deg, var(--secondary), var(--accent-pink));
     }
 
     /* Positionnement responsive */
@@ -466,19 +466,18 @@
             <span class="navbar-toggler-icon"></span>
           </button>
 
-            <div class="d-flex align-items-center ms-lg-3">
-              <!-- Bouton Admin (visible seulement si admin) -->
-              <button class="auth-btn me-3" id="adminBtn" style="display:none;">
-                <span>Admin</span>
-                <div class="auth-underline"></div>
-              </button>
-              
-              <!-- Bouton Login -->
-              <button class="auth-btn" id="loginBtn">
-                <span>Login</span>
-                <div class="auth-underline"></div>
-              </button>
-            </div>
+          <div class="d-flex align-items-center ms-lg-3">
+            <!-- Bouton Admin (visible seulement si admin) -->
+            <button class="auth-btn me-3" id="adminBtn" style="display:none;">
+              <span>Admin</span>
+              <div class="auth-underline"></div>
+            </button>
+            
+            <!-- Bouton Login -->
+            <button class="auth-btn" id="loginBtn">
+              <span>Login</span>
+              <div class="auth-underline"></div>
+            </button>
           </div>
         </div>
       </nav>
@@ -499,7 +498,7 @@
   <footer class="cyber-footer py-5">
     <div class="container">
       <div class="footer-bottom text-center mt-5 pt-3">
-        <p>© 2025 NexusStore. All rights reserved.</p>
+        <p>© 2025 NexusStore. Tous droits réservés.</p>
       </div>
     </div>
   </footer>
@@ -507,7 +506,7 @@
   <!-- Templates -->
   <template id="cart-item-template">
     <div class="cart-items-container">
-      <div class="cart-item">
+      <div class="cart-item" data-id="">
         <img src="" alt="" class="cart-item-image" data-image>
         <div class="cart-item-details">
           <h3 class="cart-item-name" data-name></h3>
@@ -585,8 +584,9 @@
 
     // Gestion du panier
     function loadCart() {
-      const cart = JSON.parse(localStorage.getItem('nexusCart')) || [];
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
       const cartContent = document.getElementById('cartContent');
+      cartContent.innerHTML = '';
       
       if (cart.length === 0) {
         // Afficher le panier vide
@@ -605,21 +605,26 @@
         
         cart.forEach((item, index) => {
           const clone = itemTemplate.content.cloneNode(true);
+          const cartItemElement = clone.querySelector('.cart-item');
+          cartItemElement.dataset.id = item.id || index;
           
           // Remplir les données de l'article
           clone.querySelector('[data-image]').src = item.image;
           clone.querySelector('[data-image]').alt = item.name;
           clone.querySelector('[data-name]').textContent = item.name;
-          clone.querySelector('[data-price]').textContent = `$${(item.price * item.quantity).toFixed(2)}`;
+          
+          // Gestion du prix (compatible avec les deux formats)
+          const price = parseFloat(item.price.replace(/[^0-9.]/g, '')) || item.price;
+          const itemSubtotal = price * item.quantity;
+          subtotal += itemSubtotal;
+          
+          clone.querySelector('[data-price]').textContent = `Price: ${item.price}`;
           clone.querySelector('[data-quantity]').value = item.quantity;
           
           // Gestion des événements
           clone.querySelector('[data-decrease]').addEventListener('click', () => updateQuantity(index, -1));
           clone.querySelector('[data-increase]').addEventListener('click', () => updateQuantity(index, 1));
           clone.querySelector('[data-remove]').addEventListener('click', () => removeItem(index));
-          
-          // Calculer le sous-total
-          subtotal += item.price * item.quantity;
           
           itemsContainer.appendChild(clone);
         });
@@ -642,7 +647,11 @@
     }
 
     function updateQuantity(index, change) {
-      const cart = JSON.parse(localStorage.getItem('nexusCart')) || [];
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      
+      // Vérifier si l'index existe
+      if (index < 0 || index >= cart.length) return;
+      
       const newQuantity = cart[index].quantity + change;
       
       if (newQuantity < 1) {
@@ -651,21 +660,31 @@
       }
       
       cart[index].quantity = newQuantity;
-      localStorage.setItem('nexusCart', JSON.stringify(cart));
+      localStorage.setItem('cart', JSON.stringify(cart));
       loadCart(); // Recharger le panier
     }
 
     function removeItem(index) {
-      const cart = JSON.parse(localStorage.getItem('nexusCart')) || [];
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      
+      // Vérifier si l'index existe
+      if (index < 0 || index >= cart.length) return;
+      
+      // Supprimer l'élément du panier
       cart.splice(index, 1);
-      localStorage.setItem('nexusCart', JSON.stringify(cart));
-      loadCart(); // Recharger le panier
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Recharger le panier
+      loadCart();
+      
+      // Mettre à jour le compteur du panier dans la navbar
+      updateCartCounter();
     }
 
     function proceedToCheckout() {
-      const cart = JSON.parse(localStorage.getItem('nexusCart')) || [];
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
       if (cart.length === 0) {
-        alert('Your cart is empty!');
+        alert('Votre panier est vide !');
         return;
       }
       
@@ -675,9 +694,19 @@
     }
 
     function updateCartCounter() {
-      const cart = JSON.parse(localStorage.getItem('nexusCart')) || [];
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
       const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-      document.getElementById('cartCounter').textContent = totalItems;
+      
+      // Mettre à jour le compteur dans la navbar si l'élément existe
+      const cartCounterElement = document.getElementById('cartCounter');
+      if (cartCounterElement) {
+        cartCounterElement.textContent = totalItems;
+      }
+      
+      // Émettre un événement personnalisé pour informer d'autres pages du changement
+      window.dispatchEvent(new CustomEvent('cartUpdated', {
+        detail: { count: totalItems }
+      }));
     }
 
     // Initialisation

@@ -6,10 +6,281 @@
   <title>NexusStore - Futuristic E-Commerce</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
     /* Ajout du style pour le défilement doux */
     html {
       scroll-behavior: smooth;
+    }
+    
+    /* Cart Styles */
+    .cyber-cart-items {
+      background: rgba(20, 20, 30, 0.7);
+      border-radius: 10px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--neon-blue);
+    }
+
+    .empty-cart-message {
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    .empty-cart-message h4 {
+      color: var(--neon-pink);
+      margin-bottom: 10px;
+    }
+
+    .cyber-cart-item {
+      display: flex;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(157, 0, 255, 0.2);
+    }
+
+    .cyber-cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item-image {
+      width: 80px;
+      height: 80px;
+      margin-right: 20px;
+    }
+
+    .cart-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .cart-item-details {
+      flex: 1;
+    }
+
+    .cart-item-details h4 {
+      margin-bottom: 5px;
+      color: var(--neon-blue);
+    }
+
+    .cart-item-price {
+      color: var(--neon-pink);
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+    }
+
+    .quantity-btn {
+      background: rgba(157, 0, 255, 0.2);
+      border: none;
+      color: white;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .quantity-btn:hover {
+      background: var(--neon-blue);
+    }
+
+    .cart-item-quantity span {
+      margin: 0 10px;
+    }
+
+    .cart-item-remove {
+      background: none;
+      border: none;
+      color: #ff3860;
+      cursor: pointer;
+      margin-left: 15px;
+      transition: all 0.3s;
+    }
+
+    .cart-item-remove:hover {
+      transform: scale(1.2);
+    }
+
+    .cart-item-remove svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .cyber-cart-summary {
+      background: rgba(20, 20, 30, 0.7);
+      border-radius: 10px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--neon-pink);
+    }
+
+    .cyber-cart-summary h3 {
+      color: var(--neon-pink);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .summary-details {
+      margin-bottom: 20px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .summary-row.total {
+      border-top: 1px solid rgba(157, 0, 255, 0.3);
+      padding-top: 10px;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+
+    /* Pre-order Modal */
+    .pre-order-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      backdrop-filter: blur(5px);
+    }
+
+    .pre-order-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .pre-order-content {
+      background: rgba(20, 20, 30, 0.9);
+      border-radius: 10px;
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      border: 1px solid var(--neon-blue);
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s;
+    }
+
+    .pre-order-modal.active .pre-order-content {
+      transform: translateY(0);
+    }
+
+    .pre-order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--neon-blue);
+      padding-bottom: 10px;
+    }
+
+    .pre-order-title {
+      color: var(--neon-pink);
+      margin: 0;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      color: var(--neon-blue);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .pre-order-body {
+      margin-bottom: 20px;
+    }
+
+    .pre-order-details {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .pre-order-image {
+      width: 150px;
+      height: 150px;
+      margin-right: 20px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .pre-order-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .pre-order-info h4 {
+      color: var(--neon-blue);
+      margin-bottom: 10px;
+    }
+
+    .pre-order-info p {
+      margin-bottom: 5px;
+    }
+
+    .pre-order-info .price {
+      color: var(--neon-pink);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .pre-order-options {
+      margin-top: 20px;
+    }
+
+    .pre-order-options label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--neon-blue);
+    }
+
+    .pre-order-options .selected-option {
+      color: white;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    .pre-order-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .confirm-pre-order {
+      background-color: var(--neon-blue);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .confirm-pre-order:hover {
+      background-color: var(--neon-pink);
     }
   </style>
   <link rel="stylesheet" href="style.css">
@@ -19,7 +290,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
 </head>
-<body class="dark">
+<body class="dark-mode">
   <!-- Navigation -->
   <header class="cyber-header">
     <div class="container px-4 py-3">
@@ -81,12 +352,6 @@
                 <span>Login</span>
                 <div class="auth-underline"></div>
               </button>
-
-              <script>
-                document.getElementById('loginBtn').addEventListener('click', function() {
-                  window.location.href = 'login1.html';
-                });
-              </script>
             </div>
           </div>
         </div>
@@ -102,7 +367,6 @@
           <div class="cyber-hero-content">
             <h1>THE FUTURE OF SHOPPING</h1>
             <p class="cyber-subtitle">Experience next-gen products in an immersive cyberpunk environment</p>
-            <!-- Ajout de l'ID à la section Featured Products et modification du bouton -->
             <button class="cyber-button-primary" onclick="document.getElementById('featured-products').scrollIntoView({ behavior: 'smooth' })">EXPLORE NOW</button>
           </div>
           <div class="cyber-scroll-indicator"></div>
@@ -130,7 +394,7 @@
             </div>
             <div class="product-footer">
               <span class="product-price">$29.99</span>
-              <button class="cyber-button-small">ADD TO CART</button>
+              <button class="cyber-button-small add-to-cart">ADD TO CART</button>
             </div>
           </div>
         </div>
@@ -147,7 +411,7 @@
             </div>
             <div class="product-footer">
               <span class="product-price">$18.99</span>
-              <button class="cyber-button-small">ADD TO CART</button>
+              <button class="cyber-button-small add-to-cart">ADD TO CART</button>
             </div>
           </div>
         </div>
@@ -165,7 +429,7 @@
             </div>
             <div class="product-footer">
               <span class="product-price">$149.99</span>
-              <button class="cyber-button-small">ADD TO CART</button>
+              <button class="cyber-button-small add-to-cart">ADD TO CART</button>
             </div>
           </div>
         </div>
@@ -191,28 +455,58 @@
             <div class="cyber-product-options">
               <div class="option-group mb-3">
                 <label class="d-block mb-2">Size:</label>
-                <select class="cyber-select form-select">
-                  <option>S</option>
-                  <option>M</option>
-                  <option>L</option>
-                  <option>XL</option>
+                <select class="cyber-select form-select" id="jacket-size">
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
                 </select>
               </div>
               <div class="option-group mb-4">
                 <label class="d-block mb-2">Color:</label>
                 <div class="color-options">
-                  <button class="color-option color-black selected" data-image="jacket-noir.jpg" title="Noir"></button>
-                  <button class="color-option color-blue" data-image="jacket-bleu.jpg" title="Bleu"></button>
-                  <button class="color-option color-red" data-image="jacket-rouge.jpg" title="Rouge"></button>
+                  <button class="color-option color-black selected" data-image="jacket-noir.jpg" title="Noir" data-color="Noir"></button>
+                  <button class="color-option color-blue" data-image="jacket-bleu.jpg" title="Bleu" data-color="Blue"></button>
+                  <button class="color-option color-red" data-image="jacket-rouge.jpg" title="Rouge" data-color="Red"></button>
                 </div>
               </div>
             </div>
-            <button class="cyber-button-primary w-100">PRE-ORDER NOW</button>
+            <button class="cyber-button-primary w-100" id="pre-order-btn">PRE-ORDER NOW</button>
           </div>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Pre-order Modal -->
+  <div class="pre-order-modal" id="preOrderModal">
+    <div class="pre-order-content">
+      <div class="pre-order-header">
+        <h3 class="pre-order-title">PRE-ORDER CONFIRMATION</h3>
+        <button class="close-modal" id="closeModal">&times;</button>
+      </div>
+      <div class="pre-order-body">
+        <div class="pre-order-details">
+          <div class="pre-order-image">
+            <img id="modal-product-image" src="jacket-noir.jpg" alt="Neon Cyber Jacket">
+          </div>
+          <div class="pre-order-info">
+            <h4 id="modal-product-name">Neon Cyber Jacket</h4>
+            <p>Size: <span id="modal-product-size" class="selected-option">M</span></p>
+            <p>Color: <span id="modal-product-color" class="selected-option">Noir</span></p>
+            <p class="price" id="modal-product-price">$199.99</p>
+          </div>
+        </div>
+        <div class="pre-order-options">
+          <p>Your pre-order has been successfully added to your cart.</p>
+          <p>You will be notified when this product is available for shipping.</p>
+        </div>
+      </div>
+      <div class="pre-order-footer">
+        <button class="cyber-button-primary confirm-pre-order" id="confirmPreOrder">CONFIRM PRE-ORDER</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Newsletter -->
   <section class="cyber-newsletter py-5">
@@ -287,6 +581,215 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialisation du thème
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const body = document.body;
+      
+      // Vérifier le thème dans le localStorage
+      const currentTheme = localStorage.getItem('theme') || 'dark';
+      body.classList.add(currentTheme === 'dark' ? 'dark-mode' : 'light-mode');
+      darkModeToggle.checked = currentTheme === 'light';
+
+      // Gestion du changement de thème
+      darkModeToggle.addEventListener('click', () => {
+        const isDark = !body.classList.contains('dark-mode');
+        body.classList.toggle('dark-mode');
+        body.classList.toggle('light-mode');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        createParticles(darkModeToggle, isDark ? 'var(--neon-blue)' : 'var(--neon-pink)');
+      });
+
+      // Gestion du panier
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartCounter = document.querySelector('.cart-counter');
+
+      // Mettre à jour le compteur du panier
+      const updateCartCounter = () => {
+        const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+        cartCounter.textContent = totalItems;
+        localStorage.setItem('cart', JSON.stringify(cart));
+      };
+
+      // Ajouter un produit au panier
+      const addToCart = (product) => {
+        // Vérifier si le produit existe déjà dans le panier
+        const existingProduct = cart.find(item => item.id === product.id);
+        
+        if (existingProduct) {
+          existingProduct.quantity += 1;
+        } else {
+          cart.push({...product, quantity: 1});
+        }
+        
+        updateCartCounter();
+        
+        // Animation de notification
+        const notification = document.createElement('div');
+        notification.textContent = `${product.name} added to cart`;
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = 'var(--neon-blue)';
+        notification.style.color = 'white';
+        notification.style.padding = '10px 20px';
+        notification.style.borderRadius = '5px';
+        notification.style.zIndex = '1000';
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+          notification.style.opacity = '0';
+          setTimeout(() => notification.remove(), 500);
+        }, 3000);
+      };
+
+      // Gestion des boutons "Add to Cart"
+      document.querySelectorAll('.add-to-cart').forEach((button, index) => {
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          const productCard = button.closest('.cyber-product-card');
+          const product = {
+            id: Date.now() + index,
+            name: productCard.querySelector('h3').textContent,
+            price: productCard.querySelector('.product-price').textContent,
+            image: productCard.querySelector('.product-image').src
+          };
+          
+          addToCart(product);
+          
+          // Animation du bouton
+          gsap.to(button, {
+            scale: 1.2,
+            duration: 0.2,
+            yoyo: true,
+            repeat: 1
+          });
+        });
+      });
+
+      // Gestion de la sélection des couleurs pour les jackets
+      document.querySelectorAll('.color-option').forEach(button => {
+        button.addEventListener('click', function() {
+          document.querySelectorAll('.color-option').forEach(btn => btn.classList.remove('selected'));
+          this.classList.add('selected');
+          
+          const jacketImage = document.getElementById('jacket-image');
+          const newImage = this.getAttribute('data-image');
+          
+          gsap.to(jacketImage, {
+            opacity: 0,
+            duration: 0.3,
+            onComplete: () => {
+              jacketImage.src = newImage;
+              gsap.to(jacketImage, { opacity: 1, duration: 0.3 });
+            }
+          });
+        });
+      });
+
+      // Gestion de la pré-commande
+      const preOrderModal = document.getElementById('preOrderModal');
+      const preOrderBtn = document.getElementById('pre-order-btn');
+      const closeModal = document.getElementById('closeModal');
+      const confirmPreOrder = document.getElementById('confirmPreOrder');
+      
+      preOrderBtn.addEventListener('click', () => {
+        const selectedSize = document.getElementById('jacket-size').value;
+        const selectedColor = document.querySelector('.color-option.selected').getAttribute('data-color');
+        const productImage = document.getElementById('jacket-image').src;
+        
+        // Mettre à jour les informations dans la modal
+        document.getElementById('modal-product-size').textContent = selectedSize;
+        document.getElementById('modal-product-color').textContent = selectedColor;
+        document.getElementById('modal-product-image').src = productImage;
+        
+        // Afficher la modal
+        preOrderModal.classList.add('active');
+      });
+      
+      closeModal.addEventListener('click', () => {
+        preOrderModal.classList.remove('active');
+      });
+      
+      confirmPreOrder.addEventListener('click', () => {
+        const product = {
+          id: Date.now(),
+          name: 'Neon Cyber Jacket',
+          price: '$199.99',
+          image: document.getElementById('jacket-image').src,
+          size: document.getElementById('jacket-size').value,
+          color: document.querySelector('.color-option.selected').getAttribute('data-color'),
+          isPreOrder: true
+        };
+        
+        addToCart(product);
+        preOrderModal.classList.remove('active');
+      });
+      
+      // Fermer la modal en cliquant à l'extérieur
+      preOrderModal.addEventListener('click', (e) => {
+        if (e.target === preOrderModal) {
+          preOrderModal.classList.remove('active');
+        }
+      });
+
+      // Initialiser le compteur du panier au chargement
+      updateCartCounter();
+
+      // Gestion du bouton Login
+      document.getElementById('loginBtn').addEventListener('click', function() {
+        window.location.href = 'login1.html';
+      });
+    });
+
+    // Particle Effect
+    function createParticles(element, color) {
+      const particles = [];
+      const rect = element.getBoundingClientRect();
+      const baseX = rect.left + rect.width/2;
+      const baseY = rect.top + rect.height/2;
+      
+      for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'fixed';
+        particle.style.width = '6px';
+        particle.style.height = '6px';
+        particle.style.backgroundColor = color;
+        particle.style.borderRadius = '50%';
+        document.body.appendChild(particle);
+        
+        particles.push({
+          element: particle,
+          x: 0,
+          y: 0,
+          vx: (Math.random() - 0.5) * 10,
+          vy: (Math.random() - 0.5) * 10,
+          life: 0.5 + Math.random() * 0.5,
+          age: 0
+        });
+      }
+      
+      const animate = () => {
+        particles.forEach((p, i) => {
+          p.age += 0.016;
+          p.x += p.vx;
+          p.y += p.vy;
+          
+          p.element.style.transform = `translate(${p.x}px, ${p.y}px)`;
+          p.element.style.opacity = 1 - (p.age / p.life);
+          
+          if (p.age >= p.life) {
+            p.element.remove();
+            particles.splice(i, 1);
+          }
+        });
+        
+        if (particles.length) requestAnimationFrame(animate);
+      };
+      
+      animate();
+    }
+  </script>
 </body>
 </html>
